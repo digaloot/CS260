@@ -4,11 +4,11 @@
 Have you ever forgotten an important date?  Anniversary, birthday, or something important to someone you care about?  What if you could take just a few minutes to fill out a list of people you want reminders for.  For each person, you fill out a list of dates for what is important about that person.  Then on those dates, you get a reminder to tell them how much that day means to you.  Better yet, you get a sample message that you can click to forward or you can edit or replace it before sending it to that important someone.  You have a reminder each time that day comes around with a message sent from you to them and you have now been reminded yourself for in person conversations.  
 
 ## Key Features
-Login and Information Pages to include the following:
-List of important people and their contact email
-List of important dates specific to each important person
-Selection of date types assigned with each date (birthday, anniversary, etc)
-List of pre-written messages for each date type
+- Login and Information Pages to include the following:
+- List of important people and their contact email
+- List of important dates specific to each important person
+- Selection of date types assigned with each date (birthday, anniversary, etc)
+- List of pre-written messages for each date type
 
 ## Description of Technology Implementation Plan
 1. HTML - Uses correct HTML structure for application. Four HTML pages. One for registration, one for login, one for your list of people and a fourth listing dates and date types for each person.
