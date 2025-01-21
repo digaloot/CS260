@@ -29,3 +29,11 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 ![My Important People](https://github.com/user-attachments/assets/875a3425-48bc-481e-b8fc-44ee7beea450)
 ![Important Dates](https://github.com/user-attachments/assets/00864846-06a6-4841-8e1d-a169cd14ac60)
 
+## Notes
+1. ssh -i s:\cs260-webserver-base.pem ubuntu@3.88.118.204
+2. Note that your elastic IP address is allocated until your release it, not until you terminate your instance. So make sure you release it when you no longer need it. Otherwise you will get a nasty $3 bill every month.
+3. https://github.com/webprogramming260/.github/blob/main/profile/webServers/startupAWS/startupAWS.md
+4. https://github.com/webprogramming260/.github/blob/main/profile/webServers/amazonWebServicesEc2/amazonWebServicesEc2.md
+5. https://github.com/webprogramming260/.github/blob/main/profile/webServers/amazonWebServicesRoute53/amazonWebServicesRoute53.md
+6. https://github.com/webprogramming260/.github/blob/main/profile/webServers/https/https.md
+
