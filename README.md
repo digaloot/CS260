@@ -36,4 +36,7 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 4. https://github.com/webprogramming260/.github/blob/main/profile/webServers/amazonWebServicesEc2/amazonWebServicesEc2.md
 5. https://github.com/webprogramming260/.github/blob/main/profile/webServers/amazonWebServicesRoute53/amazonWebServicesRoute53.md
 6. https://github.com/webprogramming260/.github/blob/main/profile/webServers/https/https.md
+7. simon.html
+   - https://www.youtube.com/watch?v=zg7eDNRMnWA
+   - https://github.com/webprogramming260/.github/blob/main/profile/simon/simonHtml/simonHtml.md
 
