@@ -11,25 +11,27 @@
     <!-- Use header, main, and footer elements to give semantic structure -->
     <header>
       <h1>Love Notes<sup>&reg;</sup></h1>
+      <p class="introduction">
+        Have you ever forgotten an important date? Anniversary, birthday, or something important to someone you care about? 
+        What if you could take just a few minutes to fill out a list of people you want reminders for. For each person, you 
+        fill out a list of dates for what is important about that person. Then on those dates, you get a reminder to tell them 
+        how much that day means to you. Better yet, you get a sample message that you can click to forward or you can edit or 
+        replace it before sending it to that important someone. You have a reminder each time that day comes around with a 
+        message sent from you to them and you have now been reminded yourself for in person conversations.
+      </p>
 
-      <!-- Navigation elements -->
-      <nav>
-        <!-- Menu is a semantic alternative to <ul> that represents an interaction -->
-        <menu>
-          <li><a href="index.html">Login</a></li>
-          <li><a href="createAccount.html">Create Account</a></li>
-          <li><a href="importantPeople.html">Important People</a></li>
-          <li><a href="importantDates.html">Important Dates</a></li>
-        </menu>
-      </nav>
 
       <!-- Since we don't have the ability to style we use old style HTML to give some visual formatting -->
       <hr />
+      <br/>
     </header>
 
     <main>
-      <h1>Welcome to Simon</h1>
-      <form method="get" action="play.html">
+      <h2>Login</h2>
+
+      <p class="assignment">Don't have an account? <a href="createAccount.html">Create one</a>!</p>
+
+      <form method="get" action="people.html">
         <div>
           <span>@</span>
           <input type="text" placeholder="your@email.com" />
@@ -38,16 +40,17 @@
           <span>🔒</span>
           <input type="password" placeholder="password" />
         </div>
+        <br/>
         <button type="submit">Login</button>
-        <button type="submit">Create</button>
       </form>
     </main>
 
     <footer>
+      <br/><br/>
       <hr />
-      <span class="text-reset">Author Name(s)</span>
+      <span class="text-reset">Author's Name: Adam Gleason</span>
       <br />
-      <a href="https://github.com/webprogramming260/simon-html">GitHub</a>
+      <a href="https://github.com/digaloot/CS260">GitHub</a>
     </footer>
   </body>
 </html>
