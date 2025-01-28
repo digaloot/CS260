@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Tell browsers not to scale the viewport automatically -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Love Notes HTML</title>
+    <link rel="icon" href="heart.ico" />
+  </head>
+  <body>
+    <!-- Use header, main, and footer elements to give semantic structure -->
+    <header>
+      <h1>Love Notes<sup>&reg;</sup></h1>
+      <p class="introduction">
+        Have you ever forgotten an important date? Anniversary, birthday, or something important to someone you care about? 
+        What if you could take just a few minutes to fill out a list of people you want reminders for. For each person, you 
+        fill out a list of dates for what is important about that person. Then on those dates, you get a reminder to tell them 
+        how much that day means to you. Better yet, you get a sample message that you can click to forward or you can edit or 
+        replace it before sending it to that important someone. You have a reminder each time that day comes around with a 
+        message sent from you to them and you have now been reminded yourself for in person conversations.
+      </p>
+
+
+      <!-- Since we don't have the ability to style we use old style HTML to give some visual formatting -->
+      <hr />
+      <br/>
+    </header>
+
+    <main>
+      <h2>Create an account</h2>
+
+      <p class="assignment">Create your account, it takes less than a minute.  If you already have an account 
+        <a href="index.html">login</a>.</p>
+
+      <form method="get" action="people.html">
+        <div>
+          <input type="text" placeholder="Full name" />
+        </div>
+        <div>
+          <span>@</span>
+          <input type="text" placeholder="your@email.com" />
+        </div>
+        <div>
+          <span>🔒</span>
+          <input type="password" placeholder="password" />
+        </div>
+        <div>
+          <span>🔒</span>
+          <input type="password" placeholder="confirm password" />
+        </div>
+        <br/>
+        <button type="submit">Sign up</button>
+      </form>
+    </main>
+
+    <footer>
+      <br/><br/>
+      <hr />
+      <span class="text-reset">Author's Name: Adam Gleason</span>
+      <br />
+      <a href="https://github.com/digaloot/CS260">GitHub</a>
+    </footer>
+  </body>
+</html>
