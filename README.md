@@ -40,3 +40,6 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
    - https://www.youtube.com/watch?v=zg7eDNRMnWA
    - https://github.com/webprogramming260/.github/blob/main/profile/simon/simonHtml/simonHtml.md
 
+## Notes Specific to the html Assignment
+1. Added the link for this github repository
+2. 
