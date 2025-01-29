@@ -21,7 +21,7 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
    - adding new people
    - displayed a random dog picture using the https://dog.ceo/api/breeds/image/random service.
 6. DB/Login - Store users, people, dates, date types, and messages in database. Register and login users. Credentials securely stored in database.
-7. WebSocket - On the morning of each date saved, send a suggested message to that user corresponding to the date's type the the user forward or modify and then forward.
+7. WebSocket - On the morning of each date saved, send a suggested message to that user corresponding to the date's type the the user may forward or modify and then forward.
 
 ## Sketches
 ![Register Page](https://github.com/user-attachments/assets/ed902552-b87a-44da-8117-6d6a684b0bca)
