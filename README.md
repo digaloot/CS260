@@ -30,7 +30,7 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 ![Important Dates](https://github.com/user-attachments/assets/00864846-06a6-4841-8e1d-a169cd14ac60)
 
 ## Notes
-1. ssh -i s:\cs260-webserver-base.pem ubuntu@3.88.118.204
+1. ssh -i /path/name.pem ubuntu@3.88.118.204 to connect to the site viA SSH
 2. Note that your elastic IP address is allocated until your release it, not until you terminate your instance. So make sure you release it when you no longer need it. Otherwise you will get a nasty $3 bill every month.
 3. https://github.com/webprogramming260/.github/blob/main/profile/webServers/startupAWS/startupAWS.md
 4. https://github.com/webprogramming260/.github/blob/main/profile/webServers/amazonWebServicesEc2/amazonWebServicesEc2.md
@@ -41,5 +41,6 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
    - https://github.com/webprogramming260/.github/blob/main/profile/simon/simonHtml/simonHtml.md
 
 ## Notes Specific to the html Assignment
-1. Added the link for this github repository
-2. 
+1. Added the link for this github repository in the footer of each file
+2. Added index.html, createAccount.html, people.html and dates.html files
+3. ./deployFiles.sh -k /path/name.pem -h lovenotes.click -s startup is the method for uploading the files to the production site
