@@ -11,32 +11,16 @@
     <meta name="relationship"
         content="width=device-width, initial-scale=1.0">
     <title>HTML dropdown</title>
-  </head>
-
+</head>
   <body>
+    <form method="get" action="people.html">
+      <button type="submit">Back to My Important People</button>
+    </form>
     <!-- Use header, main, and footer elements to give semantic structure -->
-
     <header>
-    </header>
+      <h2>My Important Person</h2>
+      <br/>
 
-    <main>
-      <form method="get" action="index.html">
-      <button type="submit">Logout</button>
-      </form>
-        <h2>My Important People</h2>
-        <br/><br/>
-      <form method="get" action="dates.html">
-        <div>
-          <p>
-            <img src="person.png" alt="person" width="100" height="100"><br/>
-            (PLACE HOLDER DATA REPRESENTING WHAT THE DATABASE STORES AND SERVES.)<br/>
-            Jane Doe<br/>
-            jane@lovenotes.click<br/>
-            Wife<br/>
-          </p>
-        <button type="submit">Dates</button>
-      </form>
-      <br/><br/><br/><br/>
       <form method="get" action="dates.html">
         <div>
           <img src="person.png" alt="person" width="100" height="100">
@@ -61,8 +45,57 @@
             <option value="Wife" selected>Wife</option>
           </select>
         <div>
-        <button type="submit">Add</button>
+        <button type="submit">Update</button>
       </form>
+      <!-- Since we don't have the ability to style we use old style HTML to give some visual formatting -->
+      <hr />
+      <br/>
+    </header>
+
+
+    <main>
+      <h2>Important Dates</h2>
+      <br/>
+
+      <table>
+        <tr>
+            <th>Importance</th>
+            <th>Next Date</th>
+        </tr>
+        <tr>
+          <td>Christmas</td>
+          <td>12/25/2025</td>
+      </tr>
+      <tr>
+        <td>New Years</td>
+        <td>1/1/2026</td>
+    </tr>
+  <tr>
+            <td>
+                <select>
+                    <option value="Anniversary">
+                          Anniversary
+                      </option>
+                    <option value="birthday">
+                          Birthday
+                      </option>
+                    <option value="Christmas">
+                          Christmas
+                      </option>
+                </select>
+            </td>
+            <td>    
+              <h4>
+              <input type="date" 
+                     id="Test_DatetimeLocal">
+              </h4>
+            </td>
+        </tr>
+    </table>
+    <form method="get" action="dates.html">
+      <button type="submit">Add</button>
+    </form>
+  
     </main>
 
     <footer>
