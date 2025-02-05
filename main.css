@@ -16,10 +16,6 @@
     font-weight: bold;
   }
 
-  .placeholder {
-    font-size: small;
-  }
-
   .column {
     flex:2;
   }

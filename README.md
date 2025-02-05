@@ -66,3 +66,7 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 2. Started CSS formatting on the people and dates pages.
   - This included buttons, header, and titles.
 3. Added the main.css file
+4. On the dates.html page, the word "Christmas" is a placeholder for the web socket.
+5. On the dates.html page, the Christmas and New Years important dates are placeholders for what the database stores and serves.
+6. On the people.html page, the Jane Doe record is a placeholder for what the database stores and serves.
+7. On the people.html page, the words, "Tyrannosaurus Wrecks" are the placeholder for the 3rd party API.
