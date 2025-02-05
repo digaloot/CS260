@@ -44,3 +44,25 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 1. Added the link for this github repository in the footer of each file
 2. Added index.html, createAccount.html, people.html and dates.html files
 3. ./deployFiles.sh -k /path/name.pem -h lovenotes.click -s startup is the method for uploading the files to the production site
+
+## Links Specific to the CSS Assignment
+1. https://github.com/webprogramming260/.github/blob/main/profile/css/startupCss/startupCss.md
+2. https://github.com/webprogramming260/.github/blob/main/profile/css/introduction/introduction.md
+3. https://github.com/webprogramming260/.github/blob/main/profile/css/selectors/selectors.md
+4. https://github.com/webprogramming260/.github/blob/main/profile/css/declarations/declarations.md
+5. https://github.com/webprogramming260/.github/blob/main/profile/css/fonts/fonts.md
+6. https://github.com/webprogramming260/.github/blob/main/profile/css/animation/animation.md
+7. https://github.com/webprogramming260/.github/blob/main/profile/css/practice/practice.md
+8. https://github.com/webprogramming260/.github/blob/main/profile/css/responsive/responsive.md
+9. https://github.com/webprogramming260/.github/blob/main/profile/css/grid/grid.md
+10. https://github.com/webprogramming260/.github/blob/main/profile/css/flexbox/flexbox.md
+11. https://github.com/webprogramming260/.github/blob/main/profile/css/debuggingCss/debuggingCss.md
+12. https://github.com/webprogramming260/.github/blob/main/profile/css/frameworks/frameworks.md
+13. https://github.com/webprogramming260/.github/blob/main/profile/simon/simonCss/simonCss.md
+
+## Notes Specific to the CSS Assignment
+1. Added CSS formatting to the login and create account pages.
+  - This included buttons, tables, and formatted text boxes.
+2. Started CSS formatting on the people and dates pages.
+  - This included buttons, header, and titles.
+3. Added the main.css file

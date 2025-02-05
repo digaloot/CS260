@@ -11,6 +11,17 @@
     <meta name="relationship"
         content="width=device-width, initial-scale=1.0">
     <title>HTML dropdown</title>
+
+    <link rel="stylesheet" href="main.css" />
+
+    <!-- Include bootstrap CSS framework -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+
   </head>
 
   <body>
@@ -18,15 +29,22 @@
     <!-- Use header, main, and footer elements to give semantic structure -->
 
     <header>
-      <form method="get" action="people.html">
-        <button type="submit">Back to My Important People</button>
-      </form>
+      <p>
+        Fun fact.  The most frequently selected important date is: Christmas  
+      </p>
+      <p class="placeholder"> 
+        (THE WORD CHRISTMAS IS THE PLACEHOLDER FOR THE WEBSOCKET)
+      </p>
     </header>
 
 
     <main>
-      <h2>Important Dates</h2>
-      <p>Fun fact.  The most frequently selected important date is: Christmas   (THE WORD CHRISTMAS IS THE PLACEHOLDER FOR THE WEBSOCKET)</p><br/><br/>
+      <form method="get" action="people.html">
+        <button type="submit" class="btn btn-primary">Back to My Important People</button><br/><br/>
+      </form>
+      <div class="title">
+        Important Dates
+      </div>
       <table>
         <tr>
           <th>Importance</th>
@@ -64,7 +82,7 @@
         </tr>
       </table>
       <form method="get" action="dates.html">
-        <button type="submit">Add</button>
+        <button type="submit" class="btn btn-primary">Add</button>
       </form>
     </main>
 

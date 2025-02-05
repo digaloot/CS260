@@ -1,0 +1,54 @@
+* {
+    font-family: sans-serif;
+  }
+  
+  header {
+    background-color: black;
+    color: white;
+    padding: 1em;
+    margin: 1em 0;
+    border-radius: 5px;
+  }
+
+  .title {
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+  }
+
+  .placeholder {
+    font-size: small;
+  }
+
+  .column {
+    flex:2;
+  }
+
+.left_half {
+    background-color: black;
+    color: white;
+    border: solid 4em black;
+}
+
+  .lovenotes {
+    font-size: 5em;
+    line-height: 90%;
+  }
+  
+  .introduction {
+    line-height: 120%;
+  }
+  
+  .row {
+    display: flex;
+  }
+  
+  .right_half {
+    border: solid 4em white;
+  }
+
+  .right_half_title {
+    font-size: 2em;
+    font-weight: bold;
+  }
+
