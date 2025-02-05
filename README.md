@@ -70,3 +70,6 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 5. On the dates.html page, the Christmas and New Years important dates are placeholders for what the database stores and serves.
 6. On the people.html page, the Jane Doe record is a placeholder for what the database stores and serves.
 7. On the people.html page, the words, "Tyrannosaurus Wrecks" are the placeholder for the 3rd party API.
+8. Added love_notes_jpg logo at the bottom of each page in the footer and gave it a border in main.css
+9. Could not ever get the hide-on-mobile to actually work which is why I added #8, love_notes_jpg logo to show some CSS formatting of an image.
+10. Added Bootstrap to my package

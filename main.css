@@ -63,12 +63,17 @@
     font-weight: bold;
   }
 
-  input[type="text"] {
-    width: 200px;
-}
-
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .hide-on-mobile {
       display: none;
     }
   }
+
+  .love_notes_jpg {
+    height: calc(100px + 1em);
+    margin-bottom: 1em;
+    padding: 0.5em;
+    background: rgb(86, 89, 93);
+    border-radius: 5px;
+  }
+  
