@@ -1,5 +1,6 @@
 * {
     font-family: sans-serif;
+    box-sizing: border-box;
   }
   
   header {
@@ -10,10 +11,24 @@
     border-radius: 5px;
   }
 
+  main {
+    margin-left: 3em;
+    margin-right: 3em;
+  }
+
+  Footer {
+    margin-left: 3em;
+    margin-right: 3em;
+  }
+
   .title {
     text-align: center;
     font-size: 2em;
     font-weight: bold;
+  }
+
+  .heading {
+    text-decoration: underline black;
   }
 
   .column {
@@ -48,3 +63,6 @@
     font-weight: bold;
   }
 
+  input[type="text"] {
+    width: 200px;
+}
