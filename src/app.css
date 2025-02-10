@@ -1,4 +1,10 @@
-* {
+.body {
+  display: flex;
+  flex-direction: column;
+  min-width: 375px;
+}
+* 
+{
     font-family: sans-serif;
     box-sizing: border-box;
   }
