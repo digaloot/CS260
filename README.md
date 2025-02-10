@@ -73,3 +73,8 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 8. Added love_notes_jpg logo at the bottom of each page in the footer and gave it a border in main.css
 9. Could not ever get the hide-on-mobile to actually work which is why I added #8, love_notes_jpg logo to show some CSS formatting of an image.
 10. Added Bootstrap to my package
+
+## Notes Specific to the React Assignment
+1. Installed and configured Vite
+2. Reorganized the code into directories
+3. Converted to React Bootstrap

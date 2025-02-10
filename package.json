@@ -1,5 +1,31 @@
 {
   "dependencies": {
-    "bootstrap": "^5.3.3"
-  }
+    "bootstrap": "^5.3.3",
+    "react": "^19.0.0",
+    "react-bootstrap": "^2.10.9",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.5"
+  },
+  "name": "cs260",
+  "version": "1.0.0",
+  "description": "Have you ever forgotten an important date?  Anniversary, birthday, or something important to someone you care about?  What if you could take just a few minutes to fill out a list of people you want reminders for.  For each person, you fill out a list of dates for what is important about that person.  Then on those dates, you get a reminder to tell them how much that day means to you.  Better yet, you get a sample message that you can click to forward or you can edit or replace it before sending it to that important someone.  You have a reminder each time that day comes around with a message sent from you to them and you have now been reminded yourself for in person conversations.",
+  "main": "index.js",
+  "devDependencies": {
+    "vite": "^6.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digaloot/CS260.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/digaloot/CS260/issues"
+  },
+  "homepage": "https://github.com/digaloot/CS260#readme"
 }
