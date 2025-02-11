@@ -13,36 +13,6 @@ export default function App() {
         <BrowserRouter>
             <div className='body bg-white text-black'>    
 
-            <header className='container-fluid'>
-                    <nav className='navbar fixed-top navbar-dark'>
-                        <div className='navbar-brand'>
-                            Simon<sup>&reg;</sup>
-                        </div>
-                        <menu className='navbar-nav'>
-                            <li className='nav-item'>
-                            <NavLink className='nav-link' to='index'>
-                                Login
-                            </NavLink>
-                            </li>
-                            <li className='nav-item'>
-                            <NavLink className='nav-link' to='createAccount'>
-                                CreateAccount
-                            </NavLink>
-                            </li>
-                            <li className='nav-item'>
-                            <NavLink className='nav-link' to='people'>
-                                People
-                            </NavLink>
-                            </li>
-                            <li className='nav-item'>
-                            <NavLink className='nav-link' to='dates'>
-                                Dates
-                            </NavLink>
-                            </li>
-                        </menu>
-                    </nav>
-                </header>
-                
                 <Routes>
                     <Route path='/' element={<Login />} exact />
                     <Route path='/createAccount' element={<CreateAccount />} />
