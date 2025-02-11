@@ -2,10 +2,55 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
+import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { Login } from './login/login';
+import { CreateAccount } from './createAccount/createAccount';
+import { People } from './people/people';
+import { Dates } from './dates/dates';
+
 export default function App() {
     return (
-        // <BrowserRouter>
+        <BrowserRouter>
             <div className='body bg-white text-black'>    
+
+            <header className='container-fluid'>
+                    <nav className='navbar fixed-top navbar-dark'>
+                        <div className='navbar-brand'>
+                            Simon<sup>&reg;</sup>
+                        </div>
+                        <menu className='navbar-nav'>
+                            <li className='nav-item'>
+                            <NavLink className='nav-link' to='index'>
+                                Login
+                            </NavLink>
+                            </li>
+                            <li className='nav-item'>
+                            <NavLink className='nav-link' to='createAccount'>
+                                CreateAccount
+                            </NavLink>
+                            </li>
+                            <li className='nav-item'>
+                            <NavLink className='nav-link' to='people'>
+                                People
+                            </NavLink>
+                            </li>
+                            <li className='nav-item'>
+                            <NavLink className='nav-link' to='dates'>
+                                Dates
+                            </NavLink>
+                            </li>
+                        </menu>
+                    </nav>
+                </header>
+                
+                <Routes>
+                    <Route path='/' element={<Login />} exact />
+                    <Route path='/createAccount' element={<CreateAccount />} />
+                    <Route path='/people' element={<People />} />
+                    <Route path='/dates' element={<Dates />} />
+                    <Route path='*' element={<NotFound />} />
+                </Routes>
+
                 <footer>
                     <br/><br/>
                     <hr />
@@ -15,7 +60,10 @@ export default function App() {
                     <div id="picture" className="love_notes_jpg"><img src="LoveNotes.jpg" alt="LoveNotes"  width="100" height="100" /><br/></div>          
                 </footer>
             </div>
-        // </BrowserRouter>
+        </BrowserRouter>
     );
     
+    function NotFound() {
+        return <main className='container-fluid bg-secondary text-center'>404: Return to sender. Address unknown.</main>;
+    }
 }
