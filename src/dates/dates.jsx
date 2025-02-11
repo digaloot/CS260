@@ -47,8 +47,8 @@ export function Dates() {
           </td>
           <td>    
             <div>
-              {/* <input className="form-control" type="date" id="Test_DatetimeLocal"> */}
-            </div>
+              <input className="form-control" type="date" id="Test_DatetimeLocal" />
+              </div>
           </td>
         </tr>
       </table>

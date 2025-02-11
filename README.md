@@ -85,3 +85,4 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 3. Converted to React Bootstrap
 4. Created all the jsx files
 5. Added routes and navigation
+6. Added all the React components to to all four pages
