@@ -1,10 +1,12 @@
 .body {
-  display: flex;
-  flex-direction: column;
-  min-width: 375px;
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* min-width: 375px; */
+  font-family: sans-serif;
+  box-sizing: border-box;
 }
-* 
-{
+ 
+*{
     font-family: sans-serif;
     box-sizing: border-box;
   }
@@ -23,6 +25,8 @@
   }
 
   Footer {
+    background-color: white;
+    color: black;
     margin-left: 3em;
     margin-right: 3em;
   }
@@ -76,10 +80,8 @@
   }
 
   .love_notes_jpg {
-    height: calc(100px + 1em);
-    margin-bottom: 1em;
+    width: fit-content;
     padding: 0.5em;
-    background: rgb(86, 89, 93);
-    border-radius: 5px;
+    background: gray;
   }
   
