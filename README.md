@@ -86,3 +86,6 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 4. Created all the jsx files
 5. Added routes and navigation
 6. Added all the React components to to all four pages
+
+## Notes Specific to the React2 Assignment
+1. Added the use of local storage for the username and password on the login page
