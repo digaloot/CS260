@@ -20,12 +20,12 @@ export function People() {
       </div>
       <div className="title">My Important People</div> <br/>
       <form className="body_items" method="get" action="dates.html">
-        <p>
+        <div>
           <img src="person.png" alt="person" width="100" height="100"/><br/>
           <div>Jane Doe</div>
           <div>jane@lovenotes.click</div>
           <div>Wife</div>
-        </p>
+        </div>
         <div className="body_items">
           <NavLink to="/dates">
             <button type="submit" className="btn btn-primary">
@@ -52,14 +52,14 @@ export function People() {
         <div>
           <span>Relationship: </span>
           <select>
-            <option value="Employee" selected>Employee</option>
-            <option value="Boss">Boss</option>
-            <option value="Father">Father</option>
-            <option value="Mother" selected>Mother</option>
-            <option value="Son">Son</option>
-            <option value="Daughter">Daughter</option>
+            <option defaultValue="Wife">Wife</option>
             <option value="Husband">Husband</option>
-            <option value="Wife" selected>Wife</option>
+            <option value="Daughter">Daughter</option>
+            <option value="Son">Son</option>
+            <option value="Mother">Mother</option>
+            <option value="Father">Father</option>
+            <option value="Boss">Boss</option>
+            <option value="Employee">Employee</option>
           </select>
         </div>
         <div className="body_items">

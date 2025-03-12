@@ -4,6 +4,24 @@ import Button from "react-bootstrap/Button";
 
 
 export function Login() {
+
+    const [u, setU] = React.useState(' ');
+    const [pw, setPW] = React.useState(' ');
+
+    function loginUser() {
+        // console.log('login' + text);
+        localStorage.setItem('user', u);
+        localStorage.setItem('password', pw);
+    }
+
+    function uChange(e) {
+        setU(e.target.value);
+        // console.log(e.target.value);
+    }
+    function pwChange(e) {
+        setPW(e.target.value);
+    }
+
   return (
     <main className='container-fluid bg-secondary text-center'>
         <div className="row">
@@ -13,7 +31,7 @@ export function Login() {
                         Love<br />
                         Notes
                     </p>
-                    <p class="introduction">
+                    <p className="introduction">
                         Have you ever forgotten an important date? Anniversary, birthday, or something important to someone you care about? 
                         What if you could take just a few minutes to fill out a list of people you want reminders for. For each person, you 
                         fill out a list of dates for what is important about that person. Then on those dates, you get a reminder to tell them 
@@ -38,15 +56,15 @@ export function Login() {
                     <p className="assignment">Don't have an account? <NavLink to="createAccount">Create one</NavLink>!</p>
                     <div className="input-group mb-3">
                         <span className="input-group-text">@</span>
-                        <input className="form-control" type="text" placeholder="your@email.com" />
+                        <input className="form-control" type="username" onChange={uChange} placeholder="your@email.com" />
                     </div>
                     <div className="input-group mb-3">
                         <span className="input-group-text">🔒</span>
-                        <input className="form-control" type="password" placeholder="password" />
+                        <input className="form-control" type="password" onChange={pwChange} placeholder="password" />
                     </div>
                     <NavLink to="/people">
-                        <button type="submit" className="btn btn-primary">
-                            People 
+                        <button type="submit" className="btn btn-primary" onClick={loginUser}>
+                            Login 
                         </button>
                     </NavLink>
                 </div>
