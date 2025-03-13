@@ -92,3 +92,4 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 2. Added React.useState variables that can be saved and passed around to the login and create account pages
 3. Set conditional login button availability to so that a blank username and password will not allow login
 4. Set conditional creat account availability to require a name, username, and matching password / confirm password
+5. Added useEffect for both dates and people pages.

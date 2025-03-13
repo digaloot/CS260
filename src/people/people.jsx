@@ -4,6 +4,26 @@ import Button from "react-bootstrap/Button";
 
 export function People({user, password}) {
 
+  const [msg, setMsg] = React.useState('...listening');
+
+  React.useEffect(() => {
+    setInterval(() => {
+      const names = [
+        '  What do you call a dinosour that drives: "Tyrannosaurus Wrecks"..........Funny Score:', 
+        '  What state is known for it\'s small drinks: "Minnesota"..........Funny Score:', 
+        '  I told my wife she should embrace her mistakes.  She gave me a hug...........Funny Score:',
+        '  What do you call a fake noodle?  "Impasta"..........Funny Score:',
+        '  What did the big flower say to the little flower? "Hi Bud"..........Funny Score:',
+        '  I went to buy some camouflage pants, but I could\'nt find any...........Funny Score:',
+        '  I used to have a job at a calendar factory, but I got fired because I took a couple of days off...........Funny Score:'
+      ];
+      const randomName = names[Math.floor(Math.random() * names.length)];
+      const randomCount = Math.floor(Math.random() * 100) + 1;
+      const newMsg = `${randomName}  ${randomCount}`;
+      setMsg(newMsg);
+    }, 4000);
+  })
+
   function logoutUser() {
     localStorage.removeItem("name");
     localStorage.removeItem("user");
@@ -15,7 +35,7 @@ export function People({user, password}) {
 
     <main>
       <div className='header_text'>
-        Joke of the day.  What do you call a dinosour that drives: "Tyrannosaurus Wrecks"
+        Joke of the day. {msg}
         <br/>
         <br/>
       </div>

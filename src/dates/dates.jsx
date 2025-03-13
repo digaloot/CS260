@@ -3,10 +3,28 @@ import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 
 export function Dates() {
+
+    const [msg, setMsg] = React.useState('...listening');
+  
+    React.useEffect(() => {
+      setInterval(() => {
+        const names = [
+          'Christmas', 
+          'Anniversary', 
+          'Birthday',
+          'New Years'
+        ];
+        const randomName = names[Math.floor(Math.random() * names.length)];
+        const newMsg = `${randomName}`;
+        setMsg(newMsg);
+      }, 4000);
+    })
+  
+  
   return (
     <main className='body_items'>
       <div className='header_text'>
-      Fun fact.  The most frequently selected Important Date is: Christmas
+      Fun fact.  The most frequently selected Important Date is: {msg}
         <br/>
         <br/>
       </div>
@@ -18,7 +36,7 @@ export function Dates() {
         </NavLink>
       </div>
       <div className="title">Important Dates</div> <br/>
-      <table>
+      <table><tbody>
         <tr className="heading">
           <th>Importance</th>
           <th>Next Date</th>
@@ -51,7 +69,7 @@ export function Dates() {
               </div>
           </td>
         </tr>
-      </table>
+      </tbody></table>
       <br/>
       <div className="body_items">
         <NavLink to="/dates">
