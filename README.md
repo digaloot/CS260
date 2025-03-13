@@ -89,3 +89,6 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 
 ## Notes Specific to the React2 Assignment
 1. Added the use of local storage for the username and password on the login page
+2. Added React.useState variables that can be saved and passed around to the login and create account pages
+3. Set conditional login button availability to so that a blank username and password will not allow login
+4. Set conditional creat account availability to require a name, username, and matching password / confirm password

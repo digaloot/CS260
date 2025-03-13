@@ -2,7 +2,15 @@ import React from 'react';
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 
-export function People() {
+export function People({user, password}) {
+
+  function logoutUser() {
+    localStorage.removeItem("name");
+    localStorage.removeItem("user");
+    localStorage.removeItem("password");
+    localStorage.removeItem("passwordC");
+  }
+
   return (
 
     <main>
@@ -13,7 +21,7 @@ export function People() {
       </div>
       <div className='body_items'>
         <NavLink to="/">
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary" onClick={logoutUser}>
               Logout 
             </button>
           </NavLink>

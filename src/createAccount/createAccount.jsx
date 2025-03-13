@@ -2,8 +2,53 @@ import React from 'react';
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 
-export function CreateAccount() {
-  return (
+export function CreateAccount({setName, setUser, setPassword}) {
+
+  const [n, setN] = React.useState(' ');
+  const [u, setU] = React.useState(' ');
+  const [pw, setPW] = React.useState(' ');
+  const [pwc, setPWConfirm] = React.useState(' ');
+
+  function clearCredentials() {
+    localStorage.removeItem("name");
+    localStorage.removeItem("user");
+    localStorage.removeItem("password");
+    localStorage.removeItem("passwordC");
+  }
+
+  function loginUser() {
+      // console.log('login' + text);
+      localStorage.setItem('name', n);
+      localStorage.setItem('user', u);
+      localStorage.setItem('password', pw);
+      localStorage.setItem('passwordC', pwc);
+      setUser(u);
+      setPassword(pw);
+    }
+
+  function nChange(e) {
+    setN(e.target.value);
+    localStorage.setItem('name', u);
+    // console.log(e.target.value);
+  }
+
+  function uChange(e) {
+    setU(e.target.value);
+    localStorage.setItem('user', u);
+    // console.log(e.target.value);
+  }
+
+  function pwChange(e) {
+        setPW(e.target.value);
+        localStorage.setItem('password', pw);
+  }
+
+  function pwChangeConfirm(e) {
+    setPWConfirm(e.target.value);
+    localStorage.setItem('passwordC', pwc);
+  }
+
+return (
     <main className='container-fluid bg-secondary text-center'>
       <div className="row">
         <div className="column">
@@ -12,7 +57,7 @@ export function CreateAccount() {
                 Love<br />
                 Notes
             </p>
-            <p class="introduction">
+            <p className="introduction">
                 Have you ever forgotten an important date? Anniversary, birthday, or something important to someone you care about? 
                 What if you could take just a few minutes to fill out a list of people you want reminders for. For each person, you 
                 fill out a list of dates for what is important about that person. Then on those dates, you get a reminder to tell them 
@@ -26,7 +71,7 @@ export function CreateAccount() {
           <div className="right_half">
             <nav>
               <menu>
-                <li ><NavLink to="/">Login</NavLink></li>
+                <li ><NavLink onClick={clearCredentials} to="/">Login</NavLink></li>
                 <li><NavLink to="">Create Account</NavLink></li>
               </menu>
             </nav>
@@ -34,27 +79,27 @@ export function CreateAccount() {
             <div className="right_half_title">
               Create an account
             </div>
-            <p className="assignment">Create your account, it takes less than a minute.  If you already have an account, <NavLink to='/'>login</NavLink>!</p>
-            <div class="input-group mb-3">
-              <input class="form-control" type="text" placeholder="your name" />
+            <p className="assignment">Create your account, it takes less than a minute.  If you already have an account, <NavLink  onClick={clearCredentials} to='/'>login</NavLink>!</p>
+            <div className="input-group mb-3">
+              <input className="form-control" type="text" onChange={nChange} placeholder="your name" />
             </div>
             <div className="input-group mb-3">
                 <span className="input-group-text">@</span>
-                <input className="form-control" type="text" placeholder="your@email.com" />
+                <input className="form-control" type="username" onChange={uChange} placeholder="your@email.com" />
             </div>
             <div className="input-group mb-3">
                 <span className="input-group-text">🔒</span>
-                <input className="form-control" type="password" placeholder="password" />
+                <input className="form-control" type="password" onChange={pwChange} placeholder="password" />
             </div>
             <div className="input-group mb-3">
                 <span className="input-group-text">🔒</span>
-                <input className="form-control" type="password" placeholder="confirm password" />
+                <input className="form-control" type="password" onChange={pwChangeConfirm} placeholder="confirm password" />
             </div>
-              <NavLink to="/people">
-                <button type="submit" className="btn btn-primary">
-                  Sign Up 
-                </button>
-              </NavLink>
+                    {localStorage.getItem('user') && localStorage.getItem('password') && localStorage.getItem('password')==localStorage.getItem('passwordC') && <NavLink to="/people">
+                        <button type="submit" className="btn btn-primary" onClick={loginUser}>
+                            Sign Up
+                        </button>
+                    </NavLink>}
           </div>
         </div>
       </div>

@@ -9,14 +9,17 @@ import { People } from './people/people';
 import { Dates } from './dates/dates';
 
 export default function App() {
+    const [name, setName] = React.useState(localStorage.getItem('name') || null);
+    const [user, setUser] = React.useState(localStorage.getItem('user') || null);
+    const [password, setPassword] = React.useState(localStorage.getItem('password') || null);
     return (
         <BrowserRouter>
             <div className='body bg-white text-black'>    
 
                 <Routes>
-                    <Route path='/' element={<Login />} exact />
-                    <Route path='/createAccount' element={<CreateAccount />} />
-                    <Route path='/people' element={<People />} />
+                    <Route path='/' element={<Login setUser={setUser} setPassword={setPassword}/>} exact />
+                    <Route path='/createAccount' element={<CreateAccount setName={setName} setUser={setUser} setPassword={setPassword}/>} />
+                    <Route path='/people' element={<People  user={user} password={password}/>} />
                     <Route path='/dates' element={<Dates />} />
                     <Route path='*' element={<NotFound />} />
                 </Routes>

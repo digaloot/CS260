@@ -3,23 +3,34 @@ import { BrowserRouter, Link, NavLink, Route, Routes } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 
 
-export function Login() {
+export function Login({setUser, setPassword}) {
 
-    const [u, setU] = React.useState(' ');
-    const [pw, setPW] = React.useState(' ');
+        const [u, setU] = React.useState(' ');
+        const [pw, setPW] = React.useState(' ');
 
+    function clearCredentials() {
+        localStorage.removeItem("name");
+        localStorage.removeItem("user");
+        localStorage.removeItem("password");
+        localStorage.removeItem("passwordC");
+    }
+    
     function loginUser() {
-        // console.log('login' + text);
-        localStorage.setItem('user', u);
-        localStorage.setItem('password', pw);
+    // console.log('login' + text);
+    localStorage.setItem('user', u);
+    localStorage.setItem('password', pw);
+    setUser(u);
+    setPassword(pw);
     }
 
     function uChange(e) {
         setU(e.target.value);
+        localStorage.setItem('user', u);
         // console.log(e.target.value);
     }
     function pwChange(e) {
         setPW(e.target.value);
+        localStorage.setItem('password', pw);
     }
 
   return (
@@ -46,14 +57,14 @@ export function Login() {
                     <nav>
                         <menu>
                             <li ><NavLink to="">Login</NavLink></li>
-                            <li><NavLink to="createAccount">Create Account</NavLink></li>
+                            <li><NavLink onClick={clearCredentials} to="createAccount">Create Account</NavLink></li>
                         </menu>
                     </nav>
                     <br/>
                     <div className="right_half_title">
                         Login
                     </div>
-                    <p className="assignment">Don't have an account? <NavLink to="createAccount">Create one</NavLink>!</p>
+                    <p className="assignment">Don't have an account? <NavLink onClick={clearCredentials} to="createAccount">Create one</NavLink>!</p>
                     <div className="input-group mb-3">
                         <span className="input-group-text">@</span>
                         <input className="form-control" type="username" onChange={uChange} placeholder="your@email.com" />
@@ -62,11 +73,11 @@ export function Login() {
                         <span className="input-group-text">🔒</span>
                         <input className="form-control" type="password" onChange={pwChange} placeholder="password" />
                     </div>
-                    <NavLink to="/people">
+                    {localStorage.getItem('user') && localStorage.getItem('password') && <NavLink to="/people">
                         <button type="submit" className="btn btn-primary" onClick={loginUser}>
-                            Login 
+                            Login
                         </button>
-                    </NavLink>
+                    </NavLink>}
                 </div>
             </div>
         </div>
