@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, NavLink, useNavigate, Route, Routes, redirect } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 
-export function People() {
+export function People({myName, userName, password}) {
 
   const navigate = useNavigate();
 
@@ -12,7 +12,15 @@ export function People() {
   const [people, setPeople] = React.useState([]);
   const [msg, setMsg] = React.useState('...listening');
 
-  React.useEffect(() => {
+  function logout() {
+    localStorage.removeItem("myName");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("password");
+    localStorage.removeItem("passwordC");
+    props.onLogout();
+}
+
+React.useEffect(() => {
     setInterval(() => {
       const names = [
         '  What do you call a dinosour that drives: "Tyrannosaurus Wrecks"..........Funny Score:', 
@@ -80,7 +88,7 @@ export function People() {
   } else {
     peopleRows.push(
       <tr key='0'>
-        <td colSpan='4'>Add your first important person!</td>
+        <td colSpan='4'>{myName} Add your first important person!</td>
       </tr>
     );
   }
@@ -94,35 +102,16 @@ export function People() {
         <br/>
       </div>
       <div className='body_items'>
-        <NavLink to="/">
+        <NavLink onClick={logout} to="/">
             <button type="submit" className="btn btn-primary">
-              Login 
+              Logout 
             </button>
           </NavLink>
       </div>
       <div className="title">My Important People</div> <br/>
-      {/* <form className="body_items" method="get" action="dates.html">
-        <div>
-          <img src="person.png" alt="person" width="100" height="100"/><br/>
-          <div>Jane Doe</div>
-          <div>jane@lovenotes.click</div>
-          <div>Wife</div>
-        </div>
-        <div className="body_items">
-          <NavLink to="/dates">
-            <button type="submit" className="btn btn-primary">
-              Dates 
-            </button>
-          </NavLink>
-        </div>
-      </form>
-      <br/><br/><br/> */}
-      
-
-      To add a person to your table, fill in all boxes. 
       <form className="body_items" method="get" action="dates.html" >
         <div id="picture">
-          <img src="person.png" alt="person" width="100" height="100"/>
+          <img src="person.png" alt="person" width="100" height="100"/>To add a person to your table, fill in all boxes.
         </div>
         <div className="input-group mb-3">
           <div className="col-sm-2">
@@ -150,9 +139,9 @@ export function People() {
             <option value="Employee">Employee</option>
           </select>
         </div>
+        <br/>
         <div className="body_items">
-          {nome && <NavLink to="/dates">
-            {/* <button type="submit" className="btn btn-primary" disabled={nome === '' ? true : false} onClick={() => savePerson()}> */}
+          {nome && email && relationship && <NavLink to="/dates">
             <button type="submit" className="btn btn-primary" onClick={() => savePerson()}>
               Add 
             </button>
@@ -163,7 +152,6 @@ export function People() {
       <table className='table table-warning table-striped-columns'>
         <thead className='table-dark'>
           <tr>
-            {/* <th>#</th> */}
             <th>Name</th>
             <th>Email</th>
             <th>Relationship</th>

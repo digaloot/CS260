@@ -7,18 +7,21 @@ import { Login } from './login/login';
 import { CreateAccount } from './createAccount/createAccount';
 import { People } from './people/people';
 import { Dates } from './dates/dates';
-import { AuthState } from './login/authState';
 
 export default function App() {
-    // const [userName, setUserName] = React.useState(localStorage.getItem('userName') || '');
-    // const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
-    // const [authState, setAuthState] = React.useState(currentAuthState);
-  
     const [myName, setMyName] = React.useState(localStorage.getItem('myName') || ''); // this is the friendly name
     const [userName, setUserName] = React.useState(localStorage.getItem('userName') || ''); // this is the username / email address
-    const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
-    const [authState, setAuthState] = React.useState(currentAuthState);
     const [password, setPassword] = React.useState(localStorage.getItem('password') || '');
+
+
+    function logout() {
+        localStorage.removeItem("myName");
+        localStorage.removeItem("userName");
+        localStorage.removeItem("password");
+        localStorage.removeItem("passwordC");
+        props.onLogout();
+    }
+
     return (
         <BrowserRouter>
             <div className='body bg-white text-black'>    
@@ -28,17 +31,9 @@ export default function App() {
                         path='/' 
                         element={
                             <Login 
-                                userName={userName} 
-                                password={password}
-                                authState={authState}
-                                onAuthChange={(userName, authState, password) => {
-                                    setAuthState(authState);
-                                    setUserName(userName);
-                                    // setPassword(password);
-                                    }}
-            
-                                // setUser={setUser} 
-                                // setPassword={setPassword}
+                                setUserName={setUserName} 
+                                setPassword={setPassword}
+                                logout={logout}
                             />
                         } 
                         exact 
@@ -47,21 +42,36 @@ export default function App() {
                         path='/createAccount' 
                         element={
                             <CreateAccount 
-                                setMyName={myName} 
-                                userName={userName} 
-                                authState={authState}
-                                onAuthChange={(userName, authState) => {
-                                    setAuthState(authState);
-                                    setUserName(userName);
-                                    }}
-                                // setUser={setUser} 
-                                // setPassword={setPassword}
+                                setMyName={setMyName}
+                                setUserName={setUserName} 
+                                setPassword={setPassword}
                             />
                         } 
                     />
-                    <Route path='/people' element={<People />} />
-                    <Route path='/dates' element={<Dates />} />
-                    <Route path='*' element={<NotFound />} />
+                    <Route 
+                        path='/people' 
+                        element={
+                            <People  
+                                myName={myName} 
+                                userName={userName} 
+                                password={password}
+                            />
+                        } 
+                    />
+                    <Route 
+                        path='/dates' 
+                        element={
+                            <Dates 
+                            />
+                        } 
+                    />
+                    <Route 
+                        path='*' 
+                        element={
+                            <NotFound 
+                            />
+                        }
+                    />
                 </Routes>
 
                 <footer>

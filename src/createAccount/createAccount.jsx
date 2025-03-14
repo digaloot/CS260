@@ -2,20 +2,12 @@ import React from 'react';
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 
-export function CreateAccount({setName, setUser, setPassword}) {
+export function CreateAccount({setMyName, setUserName, setPassword, logout}) {
 
   const [n, setN] = React.useState(' ');
   const [u, setU] = React.useState(' ');
   const [pw, setPW] = React.useState(' ');
   const [pwc, setPWConfirm] = React.useState(' ');
-
-  function clearCredentials() {
-    localStorage.removeItem("name");
-    localStorage.removeItem("user");
-    localStorage.removeItem("password");
-    localStorage.removeItem("passwordC");
-    props.onLogout();
-  }
 
   function loginUser() {
       // console.log('login' + text);
@@ -23,7 +15,8 @@ export function CreateAccount({setName, setUser, setPassword}) {
       localStorage.setItem('user', u);
       localStorage.setItem('password', pw);
       localStorage.setItem('passwordC', pwc);
-      setUser(u);
+      setMyName(n);
+      setUserName(u);
       setPassword(pw);
     }
 
@@ -72,7 +65,7 @@ return (
           <div className="right_half">
             <nav>
               <menu>
-                <li ><NavLink onClick={clearCredentials} to="/">Login</NavLink></li>
+                <li ><NavLink onClick={logout} to="/">Login</NavLink></li>
                 <li><NavLink to="">Create Account</NavLink></li>
               </menu>
             </nav>
