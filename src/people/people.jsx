@@ -1,9 +1,15 @@
 import React from 'react';
-import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, NavLink, useNavigate, Route, Routes, redirect } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 
 export function People() {
 
+  const navigate = useNavigate();
+
+  const [nome, setNome] = React.useState(localStorage.getItem('nome') || ''); // this is their friendly name
+  const [email, setEmail] = React.useState(localStorage.getItem('email') || '');
+  const [relationship, setRelationship] = React.useState(localStorage.getItem('relationship') || '');
+  const [people, setPeople] = React.useState([]);
   const [msg, setMsg] = React.useState('...listening');
 
   React.useEffect(() => {
@@ -21,16 +27,63 @@ export function People() {
       const randomCount = Math.floor(Math.random() * 100) + 1;
       const newMsg = `${randomName}  ${randomCount}`;
       setMsg(newMsg);
-    }, 4000);
+    }, 400000);
   })
 
-  // function logoutUser() {
-  //   localStorage.removeItem("name");
-  //   localStorage.removeItem("userName");
-  //   localStorage.removeItem("password");
-  //   localStorage.removeItem("passwordC");
-  //   props.onLogout();
-  // }
+  async function savePerson() {
+    const newPerson = { nome: nome, email: email, relationship: relationship };
+    updatePeopleLocal(newPerson);
+  }
+
+  function updatePeopleLocal(newPerson) {
+    let people = [];
+    const peopleText = localStorage.getItem('people');
+    if (peopleText) {
+      people = JSON.parse(peopleText);
+    }
+
+    // let found = false;
+    // for (const [i, prevPerson] of people.entries()) {
+    //   if (newPerson.person < prevPerson.person) {
+    //     people.splice(i, 0, newPerson);
+    //     found = true;
+    //     break;
+    //   }
+    // }
+
+    // if (!found) {
+      people.push(newPerson);
+    // }
+
+    localStorage.setItem('people', JSON.stringify(people));
+  }
+
+  React.useEffect(() => {
+    const peopleText = localStorage.getItem('people');
+    if (peopleText) {
+      setPeople(JSON.parse(peopleText));
+    }
+  }, []);
+
+  const peopleRows = [];
+  if (people.length) {
+    for (const [i, person] of people.entries()) {
+      peopleRows.push(
+        <tr key={i}>
+          {/* <td>{i}</td> */}
+          <td>{person.nome.split('@')[0]}</td>
+          <td>{person.email}</td>
+          <td>{person.relationship}</td>
+        </tr>
+      );
+    }
+  } else {
+    peopleRows.push(
+      <tr key='0'>
+        <td colSpan='4'>Add your first important person!</td>
+      </tr>
+    );
+  }
 
   return (
 
@@ -48,7 +101,7 @@ export function People() {
           </NavLink>
       </div>
       <div className="title">My Important People</div> <br/>
-      <form className="body_items" method="get" action="dates.html">
+      {/* <form className="body_items" method="get" action="dates.html">
         <div>
           <img src="person.png" alt="person" width="100" height="100"/><br/>
           <div>Jane Doe</div>
@@ -63,25 +116,31 @@ export function People() {
           </NavLink>
         </div>
       </form>
-      <br/><br/><br/>
+      <br/><br/><br/> */}
       
+
+      To add a person to your table, fill in all boxes. 
       <form className="body_items" method="get" action="dates.html" >
         <div id="picture">
           <img src="person.png" alt="person" width="100" height="100"/>
         </div>
         <div className="input-group mb-3">
           <div className="col-sm-2">
-            <input className="name_box" type="text" placeholder="name" />
+            <input className="name_box" type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="name" />
           </div>
         </div>
         <div className="input-group mb-3">
           <span>@  .</span>
-          <input className="col-sm-2" type="text" placeholder="their@email.com" />
+          <input className="col-sm-2" type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="their@email.com" />
         </div>
         <div>
           <span>Relationship: </span>
-          <select>
-            <option defaultValue="Wife">Wife</option>
+          <select 
+            value={relationship} 
+            onChange={(e) => setRelationship(e.target.value)} 
+          >
+            <option defaultValue="default"></option>
+            <option value="Wife">Wife</option>
             <option value="Husband">Husband</option>
             <option value="Daughter">Daughter</option>
             <option value="Son">Son</option>
@@ -92,13 +151,27 @@ export function People() {
           </select>
         </div>
         <div className="body_items">
-          <NavLink to="/dates">
-            <button type="submit" className="btn btn-primary">
+          {nome && <NavLink to="/dates">
+            {/* <button type="submit" className="btn btn-primary" disabled={nome === '' ? true : false} onClick={() => savePerson()}> */}
+            <button type="submit" className="btn btn-primary" onClick={() => savePerson()}>
               Add 
             </button>
-          </NavLink>
+          </NavLink>}
         </div>
       </form>
+
+      <table className='table table-warning table-striped-columns'>
+        <thead className='table-dark'>
+          <tr>
+            {/* <th>#</th> */}
+            <th>Name</th>
+            <th>Email</th>
+            <th>Relationship</th>
+          </tr>
+        </thead>
+        <tbody id='people'>{peopleRows}</tbody>
+      </table>
+
     </main>
   );
 }

@@ -10,12 +10,13 @@ export function Authenticated(props) {
 
   function logout() {
     localStorage.removeItem('userName');
+    localStorage.removeItem('password');
     props.onLogout();
   }
 
   return (
     <div>
-      <div className='playerName'>{props.userName}</div>
+      <div className='userName'>{props.userName}</div>
       <Button variant='primary' onClick={() => navigate('/people')}>
         People
       </Button>

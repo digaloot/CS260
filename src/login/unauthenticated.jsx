@@ -10,13 +10,16 @@ export function Unauthenticated(props) {
 
   async function loginUser() {
     localStorage.setItem('userName', userName);
+    localStorage.setItem('password', password);
     props.onLogin(userName);
   }
 
-  async function createUser() {
-    localStorage.setItem('userName', userName);
-    props.onLogin(userName);
-  }
+  // async function createUser() {
+  //   localStorage.setItem('name', name);
+  //   localStorage.setItem('userName', userName);
+  //   localStorage.setItem('password', password);
+  //   props.onLogin(userName);
+  // }
 
   return (
     <>
@@ -27,7 +30,7 @@ export function Unauthenticated(props) {
         </div>
         <div className='input-group mb-3'>
           <span className='input-group-text'>🔒</span>
-          <input className='form-control' type='password' onChange={(e) => setPassword(e.target.value)} placeholder='password' />
+          <input className='form-control' type='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='password' />
         </div>
         <Button variant='primary' onClick={() => loginUser()} disabled={!userName || !password}>
           Login

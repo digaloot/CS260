@@ -17,7 +17,7 @@ export function Dates() {
         const randomName = names[Math.floor(Math.random() * names.length)];
         const newMsg = `${randomName}`;
         setMsg(newMsg);
-      }, 4000);
+      }, 400000);
     })
   
   

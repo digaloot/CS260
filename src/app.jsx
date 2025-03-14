@@ -14,8 +14,8 @@ export default function App() {
     // const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
     // const [authState, setAuthState] = React.useState(currentAuthState);
   
-    const [name, setName] = React.useState(localStorage.getItem('name') || ''); // this is the friendly name
-    const [userName, setUserName] = React.useState(localStorage.getItem('user') || ''); // this is the username / email address
+    const [myName, setMyName] = React.useState(localStorage.getItem('myName') || ''); // this is the friendly name
+    const [userName, setUserName] = React.useState(localStorage.getItem('userName') || ''); // this is the username / email address
     const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
     const [authState, setAuthState] = React.useState(currentAuthState);
     const [password, setPassword] = React.useState(localStorage.getItem('password') || '');
@@ -29,10 +29,12 @@ export default function App() {
                         element={
                             <Login 
                                 userName={userName} 
+                                password={password}
                                 authState={authState}
-                                onAuthChange={(userName, authState) => {
+                                onAuthChange={(userName, authState, password) => {
                                     setAuthState(authState);
                                     setUserName(userName);
+                                    // setPassword(password);
                                     }}
             
                                 // setUser={setUser} 
@@ -45,7 +47,7 @@ export default function App() {
                         path='/createAccount' 
                         element={
                             <CreateAccount 
-                                setName={setName} 
+                                setMyName={myName} 
                                 userName={userName} 
                                 authState={authState}
                                 onAuthChange={(userName, authState) => {
