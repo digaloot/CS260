@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 
-export function People({user, password}) {
+export function People() {
 
   const [msg, setMsg] = React.useState('...listening');
 
@@ -24,12 +24,13 @@ export function People({user, password}) {
     }, 4000);
   })
 
-  function logoutUser() {
-    localStorage.removeItem("name");
-    localStorage.removeItem("user");
-    localStorage.removeItem("password");
-    localStorage.removeItem("passwordC");
-  }
+  // function logoutUser() {
+  //   localStorage.removeItem("name");
+  //   localStorage.removeItem("userName");
+  //   localStorage.removeItem("password");
+  //   localStorage.removeItem("passwordC");
+  //   props.onLogout();
+  // }
 
   return (
 
@@ -41,8 +42,8 @@ export function People({user, password}) {
       </div>
       <div className='body_items'>
         <NavLink to="/">
-            <button type="submit" className="btn btn-primary" onClick={logoutUser}>
-              Logout 
+            <button type="submit" className="btn btn-primary">
+              Login 
             </button>
           </NavLink>
       </div>

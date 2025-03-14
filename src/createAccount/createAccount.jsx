@@ -14,6 +14,7 @@ export function CreateAccount({setName, setUser, setPassword}) {
     localStorage.removeItem("user");
     localStorage.removeItem("password");
     localStorage.removeItem("passwordC");
+    props.onLogout();
   }
 
   function loginUser() {

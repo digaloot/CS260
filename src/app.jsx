@@ -7,19 +7,57 @@ import { Login } from './login/login';
 import { CreateAccount } from './createAccount/createAccount';
 import { People } from './people/people';
 import { Dates } from './dates/dates';
+import { AuthState } from './login/authState';
 
 export default function App() {
-    const [name, setName] = React.useState(localStorage.getItem('name') || null);
-    const [user, setUser] = React.useState(localStorage.getItem('user') || null);
-    const [password, setPassword] = React.useState(localStorage.getItem('password') || null);
+    // const [userName, setUserName] = React.useState(localStorage.getItem('userName') || '');
+    // const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
+    // const [authState, setAuthState] = React.useState(currentAuthState);
+  
+    const [name, setName] = React.useState(localStorage.getItem('name') || ''); // this is the friendly name
+    const [userName, setUserName] = React.useState(localStorage.getItem('user') || ''); // this is the username / email address
+    const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
+    const [authState, setAuthState] = React.useState(currentAuthState);
+    const [password, setPassword] = React.useState(localStorage.getItem('password') || '');
     return (
         <BrowserRouter>
             <div className='body bg-white text-black'>    
 
                 <Routes>
-                    <Route path='/' element={<Login setUser={setUser} setPassword={setPassword}/>} exact />
-                    <Route path='/createAccount' element={<CreateAccount setName={setName} setUser={setUser} setPassword={setPassword}/>} />
-                    <Route path='/people' element={<People  user={user} password={password}/>} />
+                    <Route 
+                        path='/' 
+                        element={
+                            <Login 
+                                userName={userName} 
+                                authState={authState}
+                                onAuthChange={(userName, authState) => {
+                                    setAuthState(authState);
+                                    setUserName(userName);
+                                    }}
+            
+                                // setUser={setUser} 
+                                // setPassword={setPassword}
+                            />
+                        } 
+                        exact 
+                    />
+                    <Route 
+                        path='/createAccount' 
+                        element={
+                            <CreateAccount 
+                                setName={setName} 
+                                userName={userName} 
+                                authState={authState}
+                                onAuthChange={(userName, authState) => {
+                                    setAuthState(authState);
+                                    setUserName(userName);
+                                    }}
+                                // setUser={setUser} 
+                                // setPassword={setPassword}
+                            />
+                        } 
+                    />
+                    <Route path='/people' element={<People />} />
                     <Route path='/dates' element={<Dates />} />
                     <Route path='*' element={<NotFound />} />
                 </Routes>
