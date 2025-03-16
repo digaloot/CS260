@@ -93,3 +93,4 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 3. Set conditional login button availability using the authenticated, unauthenticated and authstate libraries
 4. Set conditional creat account availability to require a name, username, and matching password / confirm password
 5. Added useEffect for both dates and people pages.
+6. Changed the people and dates pages to use tables and added check boxes that allow you to select a person on the people page and that will redirect you to the dates page with that person's name as a filterable property.

@@ -55,6 +55,7 @@ export default function App() {
                                 myName={myName} 
                                 userName={userName} 
                                 password={password}
+                                logout={logout}
                             />
                         } 
                     />

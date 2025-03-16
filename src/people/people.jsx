@@ -1,24 +1,84 @@
 import React from 'react';
-import { BrowserRouter, NavLink, useNavigate, Route, Routes, redirect } from 'react-router-dom';
+import { BrowserRouter, NavLink, useNavigate, Route, Routes, redirect, Link, Navigate } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
+import DataTable from 'react-data-table-component';
+import { useEffect, useState } from "react"
 
-export function People({myName, userName, password}) {
+export function People({myName, userName, password, logout}) {
+
+  const customStyles = {
+    headRow: {
+      style: {
+        backgroundColor: "blue",
+        color: "black"
+      }
+    },
+    headCells: {
+      style: {
+        fontSize: '16px',
+        fontWeight: '600',
+        textTransform: 'uppercase'
+      }
+    },
+    cells: {
+      style: {
+        fontsize: '15px'
+      }
+    }
+  };
+
+  const columns = [
+    {
+      name: 'Name',
+      selector: row => row.nome,
+      sortable: true
+    },
+    {
+      name: 'Email',
+      selector: row => row.email,
+      sortable: true
+    },
+    {
+      name: 'Relationship',
+      selector: row => row.relationship,
+      sortable: true
+    },
+  ]
+
+  const [records, setRecords] = React.useState(data);
+
+  function handleFilter(event) {
+    const newData = data.filter(row => {
+      return row.nome.toLowerCase().includes(event.target.value.toLowerCase())
+    })
+    setRecords(newData)
+  }
 
   const navigate = useNavigate();
+
+  const handleRowSelection = ({ selectedRows }) => {
+    if (selectedRows.length > 0) {
+      const selectedRow = selectedRows[0];
+      // Do something with the selected row data, e.g.,
+      console.log('Selected row:', selectedRow.nome);
+      // Pass the data to another component or update state
+      // setSelectedData(selectedRow); 
+      navigate("/dates", {state:selectedRow.nome});
+    // } else {
+    //     setSelectedData(null); // Clear data if no row is selected
+    }
+  };
+
+
+
+
+
 
   const [nome, setNome] = React.useState(localStorage.getItem('nome') || ''); // this is their friendly name
   const [email, setEmail] = React.useState(localStorage.getItem('email') || '');
   const [relationship, setRelationship] = React.useState(localStorage.getItem('relationship') || '');
   const [people, setPeople] = React.useState([]);
   const [msg, setMsg] = React.useState('...listening');
-
-  function logout() {
-    localStorage.removeItem("myName");
-    localStorage.removeItem("userName");
-    localStorage.removeItem("password");
-    localStorage.removeItem("passwordC");
-    props.onLogout();
-}
 
 React.useEffect(() => {
     setInterval(() => {
@@ -38,6 +98,10 @@ React.useEffect(() => {
     }, 400000);
   })
 
+
+
+
+
   async function savePerson() {
     const newPerson = { nome: nome, email: email, relationship: relationship };
     updatePeopleLocal(newPerson);
@@ -49,20 +113,7 @@ React.useEffect(() => {
     if (peopleText) {
       people = JSON.parse(peopleText);
     }
-
-    // let found = false;
-    // for (const [i, prevPerson] of people.entries()) {
-    //   if (newPerson.person < prevPerson.person) {
-    //     people.splice(i, 0, newPerson);
-    //     found = true;
-    //     break;
-    //   }
-    // }
-
-    // if (!found) {
-      people.push(newPerson);
-    // }
-
+    people.push(newPerson);
     localStorage.setItem('people', JSON.stringify(people));
   }
 
@@ -78,9 +129,8 @@ React.useEffect(() => {
     for (const [i, person] of people.entries()) {
       peopleRows.push(
         <tr key={i}>
-          {/* <td>{i}</td> */}
-          <td>{person.nome.split('@')[0]}</td>
-          <td>{person.email}</td>
+          <td>{person.nome}</td>
+          <td>{person.email.split('@')[0]}</td>
           <td>{person.relationship}</td>
         </tr>
       );
@@ -88,7 +138,7 @@ React.useEffect(() => {
   } else {
     peopleRows.push(
       <tr key='0'>
-        <td colSpan='4'>{myName} Add your first important person!</td>
+        <td colSpan='4'>Add your first important person!</td>
       </tr>
     );
   }
@@ -109,7 +159,7 @@ React.useEffect(() => {
           </NavLink>
       </div>
       <div className="title">My Important People</div> <br/>
-      <form className="body_items" method="get" action="dates.html" >
+      <form className="body_items" method="get">
         <div id="picture">
           <img src="person.png" alt="person" width="100" height="100"/>To add a person to your table, fill in all boxes.
         </div>
@@ -141,7 +191,7 @@ React.useEffect(() => {
         </div>
         <br/>
         <div className="body_items">
-          {nome && email && relationship && <NavLink to="/dates">
+          {nome && email && relationship && <NavLink to="/dates" state={nome}>
             <button type="submit" className="btn btn-primary" onClick={() => savePerson()}>
               Add 
             </button>
@@ -149,16 +199,24 @@ React.useEffect(() => {
         </div>
       </form>
 
-      <table className='table table-warning table-striped-columns'>
-        <thead className='table-dark'>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Relationship</th>
-          </tr>
-        </thead>
-        <tbody id='people'>{peopleRows}</tbody>
-      </table>
+     <div className="container mt-5'">
+        <div className='text-end' onChange = {handleFilter}>
+          <input type = 'text'  placeholder="Search..."/>
+        </div>
+        <div>
+          <DataTable
+          columns = {columns}
+          data = {people}
+          fixedHeader
+          selectableRows
+          selectableRowsSingle
+          onSelectedRowsChange={handleRowSelection}
+          pagination
+          stripedRows 
+          customStyles={customStyles}
+          ></DataTable>
+        </div>
+      </div>
 
     </main>
   );

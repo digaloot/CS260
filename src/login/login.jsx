@@ -5,8 +5,8 @@ import Button from "react-bootstrap/Button";
 
 export function Login({ setUserName, setPassword, logout }) {
 
-        const [u, setU] = React.useState(' ');
-        const [pw, setPW] = React.useState(' ');
+        const [u, setU] = React.useState('');
+        const [pw, setPW] = React.useState('');
 
     function loginUser() {
     // console.log('login' + text);
