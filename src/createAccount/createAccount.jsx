@@ -73,7 +73,7 @@ return (
             <div className="right_half_title">
               Create an account
             </div>
-            <p className="assignment">Create your account, it takes less than a minute.  If you already have an account, <NavLink  onClick={clearCredentials} to='/'>login</NavLink>!</p>
+            <p className="assignment">Create your account, it takes less than a minute.  If you already have an account, <NavLink  onClick={logout} to='/'>login</NavLink>!</p>
             <div className="input-group mb-3">
               <input className="form-control" type="text" onChange={nChange} placeholder="your name" />
             </div>

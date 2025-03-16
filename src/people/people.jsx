@@ -45,8 +45,6 @@ export function People({myName, userName, password, logout}) {
     },
   ]
 
-  const [records, setRecords] = React.useState(data);
-
   function handleFilter(event) {
     const newData = data.filter(row => {
       return row.nome.toLowerCase().includes(event.target.value.toLowerCase())
@@ -68,11 +66,6 @@ export function People({myName, userName, password, logout}) {
     //     setSelectedData(null); // Clear data if no row is selected
     }
   };
-
-
-
-
-
 
   const [nome, setNome] = React.useState(localStorage.getItem('nome') || ''); // this is their friendly name
   const [email, setEmail] = React.useState(localStorage.getItem('email') || '');
@@ -99,12 +92,10 @@ React.useEffect(() => {
   })
 
 
-
-
-
   async function savePerson() {
     const newPerson = { nome: nome, email: email, relationship: relationship };
     updatePeopleLocal(newPerson);
+    setPeople([...people, newPerson]);
   }
 
   function updatePeopleLocal(newPerson) {
@@ -138,7 +129,7 @@ React.useEffect(() => {
   } else {
     peopleRows.push(
       <tr key='0'>
-        <td colSpan='4'>Add your first important person!</td>
+        <td colSpan='3'>Add your first important person!</td>
       </tr>
     );
   }
@@ -214,6 +205,8 @@ React.useEffect(() => {
           pagination
           stripedRows 
           customStyles={customStyles}
+          paginationPerPage={5}
+          paginationRowsPerPageOptions={[ 5, 10, 15, 20, 25, 50, 100 ]}
           ></DataTable>
         </div>
       </div>
