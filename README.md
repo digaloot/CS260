@@ -94,3 +94,6 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 4. Set conditional creat account availability to require a name, username, and matching password / confirm password
 5. Added useEffect for both dates and people pages.
 6. Changed the people and dates pages to use tables and added check boxes that allow you to select a person on the people page and that will redirect you to the dates page with that person's name as a filterable property.
+7. Fixed a bug in the useEffect that was causing it to cycle faster and faster until my memory got all used up by adding ,[state] between the last two curly braces of the useEffect function.
+8. Added the ability to delete with a button either people or dates row by row.
+9. Added a button for Del and Dates on the people table and one for Del on the dates table.

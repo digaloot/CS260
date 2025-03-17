@@ -1,9 +1,6 @@
 import React from 'react';
-import { BrowserRouter, NavLink, Route, Routes, useLocation, Link } from 'react-router-dom';
-import Button from "react-bootstrap/Button";
+import { NavLink, useLocation } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
-import { useRef, useEffect, useState } from "react"
-// import './dates.css';
 
 export function Dates( props ) {
   const location = useLocation();
@@ -33,6 +30,12 @@ export function Dates( props ) {
 
   const columns = [
     {
+      name: 'Nome',
+      selector: row => row.nome,
+      sortable: true,
+      width: "250px"
+    },
+    {
       name: 'Special Day',
       selector: row => row.specialDay,
       sortable: true,
@@ -42,23 +45,21 @@ export function Dates( props ) {
       name: 'mm/dd',
       selector: row => row.mmdd,
       sortable: true
-    }  ]
-
-
-  const handleRowSelection = ({ selectedRows }) => {
-    if (selectedRows.length > 0) {
-      const selectedRow = selectedRows[0];
-      // Do something with the selected row data, e.g.,
-      console.log('Selected row:', selectedRow.specialDay, selectedRow);
-      // Pass the data to another component or update state
-      // setSelectedData(selectedRow); 
-      handleDelete(selectedRow);
-    // } else {
-    //     setSelectedData(null); // Clear data if no row is selected
+    },
+    {
+      name: "Actions",
+      cell: (row) => (
+        <>
+        <span onClick={() => handleDelete(row)} className='btn btn-danger btn-sm' >Trash</span>
+        </>
+      ),
+      ignoreRowClick: true,
     }
-  };
+  ]
 
+  const [filterDates, setFilterDates] = React.useState({});
   const [msg, setMsg] = React.useState('...listening');
+  const [nome, setNome] = React.useState(localStorage.getItem('nome') || '');
   const [specialDay, setSpecialDay] = React.useState(localStorage.getItem('specialDay') || '');
   const [mmdd, setMMDD] = React.useState(localStorage.getItem('mmdd') || '');
   
@@ -73,14 +74,15 @@ export function Dates( props ) {
         const randomName = names[Math.floor(Math.random() * names.length)];
         const newMsg = `${randomName}`;
         setMsg(newMsg);
-      }, 400000);
-    })
+      }, 1000);
+    },[state])
 
 
       async function saveDate() {
-        const newdate = { specialDay: specialDay, mmdd: mmdd };
+        const newdate = { nome: state, specialDay: specialDay, mmdd: mmdd };
         updateDatesLocal(newdate);
         setDates([...dates, newdate]);
+        setNome('');
         setSpecialDay('');
         setMMDD('');
       }
@@ -100,32 +102,32 @@ export function Dates( props ) {
         if (datesText) {
           setDates(JSON.parse(datesText));
         }
+        setFilterDates(JSON.parse(datesText));
+        // handleFilter(undefined);
       }, []);
+
+      React.useEffect(
+        () => {
+        if (filterDates.filter)  {
+          handleFilter(undefined);
+        }},
+        [state,filterDates] // <-- empty dependency array
+      ) 
 
       const [dates, setDates] = React.useState([]);
       
-      const dateRows = [];
-      if (dates.length) {
-        for (const [i, date] of dates.entries()) {
-          dateRows.push(
-            <tr key={i}>
-              <td>{date.specialDay}</td>
-              <td>{date.mmdd}</td>
-            </tr>
-          );
-        }
-      } else {
-        dateRows.push(
-          <tr key='0'>
-            <td colSpan='2'>Add your first important date!</td>
-          </tr>
-        );
-      }
-
       function handleDelete(selectedRow) {
         const newDates = dates.filter( li => li !== selectedRow)
         setDates(newDates);
         localStorage.setItem('dates', JSON.stringify(newDates));
+      }
+
+      function handleFilter(event) {
+        const newData = filterDates.filter(row => {
+          // return row.nome.toLowerCase().includes(event.target.value.toLowerCase())
+          return row.nome.toLowerCase().includes(state.toLowerCase())
+        })
+        setDates(newData)
       }
     
   return (
@@ -152,16 +154,16 @@ export function Dates( props ) {
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
           <input className="text" type="text" value={mmdd} onChange={(e) => setMMDD(e.target.value)} placeholder="mm/dd" />
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-          <button type="submit" className="btn btn-primary" onClick={(refreshPage) => saveDate()}> Add </button> or click the check box to delete a date.
+          <button disabled={!specialDay && !mmdd} type="submit" className="btn btn-primary" onClick={(refreshPage) => saveDate()}> Add </button>
         </span>
+        <div className='text-end' onChange = {handleFilter}>
+          <input type = 'text'  placeholder="Search..."/>
+        </div>
         <div>
           <DataTable
           columns = {columns}
           data = {dates}
           fixedHeader
-          selectableRows
-          selectableRowsSingle
-          onSelectedRowsChange={handleRowSelection}
           pagination
           stripedRows 
           customStyles={customStyles}

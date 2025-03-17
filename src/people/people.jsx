@@ -1,11 +1,9 @@
 import React from 'react';
-import { BrowserRouter, NavLink, useNavigate, Route, Routes, redirect, Link, Navigate } from 'react-router-dom';
-import Button from "react-bootstrap/Button";
+import { NavLink, useNavigate } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
-import { useEffect, useState } from "react"
-
 export function People({myName, userName, password, logout}) {
 
+  const state = location.state;
   const customStyles = {
     headRow: {
       style: {
@@ -43,30 +41,49 @@ export function People({myName, userName, password, logout}) {
       selector: row => row.relationship,
       sortable: true
     },
+    {
+      name: "Actions",
+      cell: (row) => (
+        <>
+        <span onClick={() => handleDates(row)} className='btn btn-primary btn-sm'>Dates</span>
+        &nbsp; &nbsp; &nbsp; 
+        <span onClick={() => handleDelete(row)} className='btn btn-danger btn-sm'>Trash</span>
+        </>
+      ),
+      
+      ignoreRowClick: true,
+    }
   ]
 
+  function handleDelete(selectedRow) {
+    const newPeople = people.filter( li => li !== selectedRow)
+    setPeople(newPeople);
+    localStorage.setItem('people', JSON.stringify(newPeople));
+  }
+
   function handleFilter(event) {
-    const newData = data.filter(row => {
+    const newData = filterPeople.filter(row => {
       return row.nome.toLowerCase().includes(event.target.value.toLowerCase())
     })
-    setRecords(newData)
+    setPeople(newData)
   }
 
   const navigate = useNavigate();
 
-  const handleRowSelection = ({ selectedRows }) => {
-    if (selectedRows.length > 0) {
-      const selectedRow = selectedRows[0];
+  const handleDates = (selectedRow) => {
+    // if (selectedRows.length > 0) {
+    //   const selectedRow = selectedRows[0];
       // Do something with the selected row data, e.g.,
-      console.log('Selected row:', selectedRow.nome);
+      console.log('Selected row:', [selectedRow.nome]);
       // Pass the data to another component or update state
       // setSelectedData(selectedRow); 
       navigate("/dates", {state:selectedRow.nome});
     // } else {
     //     setSelectedData(null); // Clear data if no row is selected
-    }
+    // }
   };
 
+  const [filterPeople, setFilterPeople] = React.useState({});
   const [nome, setNome] = React.useState(localStorage.getItem('nome') || ''); // this is their friendly name
   const [email, setEmail] = React.useState(localStorage.getItem('email') || '');
   const [relationship, setRelationship] = React.useState(localStorage.getItem('relationship') || '');
@@ -88,8 +105,8 @@ React.useEffect(() => {
       const randomCount = Math.floor(Math.random() * 100) + 1;
       const newMsg = `${randomName}  ${randomCount}`;
       setMsg(newMsg);
-    }, 400000);
-  })
+    }, 3000);
+  },[state])
 
 
   async function savePerson() {
@@ -113,27 +130,10 @@ React.useEffect(() => {
     if (peopleText) {
       setPeople(JSON.parse(peopleText));
     }
+    setFilterPeople(JSON.parse(peopleText));
   }, []);
 
-  const peopleRows = [];
-  if (people.length) {
-    for (const [i, person] of people.entries()) {
-      peopleRows.push(
-        <tr key={i}>
-          <td>{person.nome}</td>
-          <td>{person.email.split('@')[0]}</td>
-          <td>{person.relationship}</td>
-        </tr>
-      );
-    }
-  } else {
-    peopleRows.push(
-      <tr key='0'>
-        <td colSpan='3'>Add your first important person!</td>
-      </tr>
-    );
-  }
-
+  
   return (
 
     <main>
@@ -199,9 +199,9 @@ React.useEffect(() => {
           columns = {columns}
           data = {people}
           fixedHeader
-          selectableRows
-          selectableRowsSingle
-          onSelectedRowsChange={handleRowSelection}
+          // selectableRows
+          // selectableRowsSingle
+          // onSelectedRowsChange={handleDates}
           pagination
           stripedRows 
           customStyles={customStyles}
