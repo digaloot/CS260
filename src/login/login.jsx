@@ -17,12 +17,12 @@ export function Login({ setUserName, setPassword, logout }) {
 
     function uChange(e) {
         setU(e.target.value);
-        localStorage.setItem('userName', u);
+        // localStorage.setItem('userName', u);
         // console.log(e.target.value);
     }
     function pwChange(e) {
         setPW(e.target.value);
-        localStorage.setItem('password', pw);
+        // localStorage.setItem('password', pw);
     }
 
   return (
@@ -62,7 +62,7 @@ export function Login({ setUserName, setPassword, logout }) {
                         <span className="input-group-text">🔒</span>
                         <input className="form-control" type="password" onChange={pwChange} placeholder="password" />
                     </div>
-                    {localStorage.getItem('userName') && localStorage.getItem('password') && <NavLink to="/people">
+                    { u != '' && pw != '' && <NavLink to="/people">
                         <button type="submit" className="btn btn-primary" onClick={loginUser}>
                             Login
                         </button>

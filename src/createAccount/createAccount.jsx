@@ -21,24 +21,24 @@ export function CreateAccount({setMyName, setUserName, setPassword, logout}) {
 
   function nChange(e) {
     setN(e.target.value);
-    localStorage.setItem('name', u);
+    // localStorage.setItem('name', u);
     // console.log(e.target.value);
   }
 
   function uChange(e) {
     setU(e.target.value);
-    localStorage.setItem('user', u);
+    // localStorage.setItem('user', u);
     // console.log(e.target.value);
   }
 
   function pwChange(e) {
         setPW(e.target.value);
-        localStorage.setItem('password', pw);
+        // localStorage.setItem('password', pw);
   }
 
   function pwChangeConfirm(e) {
     setPWConfirm(e.target.value);
-    localStorage.setItem('passwordC', pwc);
+    // localStorage.setItem('passwordC', pwc);
   }
 
 return (
@@ -88,7 +88,7 @@ return (
                 <span className="input-group-text">🔒</span>
                 <input className="form-control" type="password" onChange={pwChangeConfirm} placeholder="confirm password" />
             </div>
-                    {localStorage.getItem('user') && localStorage.getItem('password') && localStorage.getItem('password')==localStorage.getItem('passwordC') && <NavLink to="/people">
+                    {u != '' && pw != '' && pw == pwc && <NavLink to="/people">
                         <button type="submit" className="btn btn-primary" onClick={loginUser}>
                             Sign Up
                         </button>
