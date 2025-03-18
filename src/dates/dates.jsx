@@ -2,17 +2,19 @@ import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 
-export function Dates( props ) {
+export function Dates({ props, userName }) {
+
   const location = useLocation();
   const state = location.state;
   const [dates, setDates] = React.useState([]);
   const [filterAltDates, setFilterAltDates] = React.useState([]);
   const [filterDates, setFilterDates] = React.useState({});
+  const [userNome, setUserNome] = React.useState({});
   const [nome, setNome] = React.useState({});
   const [msg, setMsg] = React.useState('...listening');
   const [specialDay, setSpecialDay] = React.useState(localStorage.getItem('specialDay') || '');
   const [mmdd, setMMDD] = React.useState(localStorage.getItem('mmdd') || '');
-  // console.log(state);
+  // console.log(state, userName);
 
   const customStyles = {
     headRow: {
@@ -36,6 +38,12 @@ export function Dates( props ) {
   };
 
   const columns = [
+    {
+      name: 'userNome',
+      selector: row => row.userNome,
+      sortable: true,
+      width: "0px"
+    },
     {
       name: 'Nome',
       selector: row => row.nome,
@@ -99,12 +107,14 @@ export function Dates( props ) {
     ) 
 
     async function saveDate() {
-      const newdate = { nome: state, specialDay: specialDay, mmdd: mmdd };
+      const newdate = { userNome: userName, nome: state, specialDay: specialDay, mmdd: mmdd };
       updateDatesLocal(newdate);
       setDates([...dates, newdate]);
+      setUserNome('');
       setNome('');
       setSpecialDay('');
       setMMDD('');
+      // console.log(userName);
     }
   
     function updateDatesLocal(newdate) {
@@ -126,12 +136,12 @@ export function Dates( props ) {
 
     function handleFilter(event) {
       const filterData = filterDates.filter(row => {
-        return row.nome.toLowerCase().includes(state.toLowerCase())
+        return row.nome.toLowerCase() === (state.toLowerCase()) && row.userNome.toLowerCase() .includes (userName.toLowerCase())
       })
       setDates(filterData)
 
       const filterAltData = filterAltDates.filter(row => {
-        return !row.nome.toLowerCase().includes(state.toLowerCase())
+        return row.nome.toLowerCase() !== (state.toLowerCase()) && row.userNome.toLowerCase() .includes (userName.toLowerCase())
       })
       setFilterAltDates(filterAltData)
     }

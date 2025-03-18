@@ -3,13 +3,16 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 
 export function People({myName, userName, password, logout}) {
+  console.log("username: ", userName)
 
   const navigate = useNavigate();
   const state = location.state;
   const [filterPeople, setFilterPeople] = React.useState({});
+  const [userNome, setUserNome] = React.useState({});
   const [nome, setNome] = React.useState(localStorage.getItem('nome') || ''); // this is their friendly name
   const [email, setEmail] = React.useState(localStorage.getItem('email') || '');
   const [relationship, setRelationship] = React.useState(localStorage.getItem('relationship') || '');
+  const [filterAltPeople, setFilterAltPeople] = React.useState([]);
   const [people, setPeople] = React.useState([]);
   const [dates, setDates] = React.useState([]);
   const [msg, setMsg] = React.useState('...listening');
@@ -38,6 +41,12 @@ export function People({myName, userName, password, logout}) {
 
   const columns = [
     {
+    name: 'userNome',
+    selector: row => row.userNome,
+    sortable: true,
+    width: "0px"
+  },
+  {
       name: 'Name',
       selector: row => row.nome,
       sortable: true
@@ -95,15 +104,27 @@ export function People({myName, userName, password, logout}) {
     const peopleText = localStorage.getItem('people');
     if (peopleText) {
       setPeople(JSON.parse(peopleText));
+      setFilterPeople(JSON.parse(peopleText));
+      setFilterAltPeople(JSON.parse(peopleText));
     }
-    setFilterPeople(JSON.parse(peopleText));
   }, []);
 
+    React.useEffect(
+      () => {
+        if (people) {
+          if (filterPeople.filter)  {
+            handleFilterU(undefined);
+          }
+        }
+      },
+      [filterPeople]
+    ) 
 
   function handleDelete(selectedRow) {
     const newPeople = people.filter( li => li !== selectedRow )
+    const allPeople = [...newPeople, ...filterAltPeople];
     setPeople(newPeople);
-    localStorage.setItem('people', JSON.stringify(newPeople));
+    localStorage.setItem('people', JSON.stringify(allPeople));
     const newDates = dates.filter( (li) => { return li.nome !== selectedRow.nome })
     setDates(newDates);
     localStorage.setItem('dates', JSON.stringify(newDates));
@@ -111,15 +132,28 @@ export function People({myName, userName, password, logout}) {
   
   function handleFilter(event) {
     const newData = filterPeople.filter(row => {
-      return row.nome.toLowerCase().includes(event.target.value.toLowerCase())
+      return  row.nome.toLowerCase().includes(event.target.value.toLowerCase()) && userName.toLowerCase() === (row.userNome.toLowerCase())
     })
     setPeople(newData)
   }
 
+  function handleFilterU(event) {
+    const filterData = filterPeople.filter(row => {
+      return userName.toLowerCase() === (row.userNome.toLowerCase())
+    })
+    setPeople(filterData)
+
+    const filterAltData = filterAltPeople.filter(row => {
+      return userName.toLowerCase() !== (row.userNome.toLowerCase())
+    })
+    setFilterAltPeople(filterAltData)
+  }
+
   async function savePerson() {
-    const newPerson = { nome: nome, email: email, relationship: relationship };
+    const newPerson = { userNome: userName, nome: nome, email: email, relationship: relationship };
     updatePeopleLocal(newPerson);
     setPeople([...people, newPerson]);
+    setUserNome('');
   }
 
   function updatePeopleLocal(newPerson) {

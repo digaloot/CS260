@@ -98,4 +98,5 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 8. Added the ability to delete with a button either people or dates row by row.
 9. Added a button for Del and Dates on the people table and one for Del on the dates table.
 10. Made it so that if an Important Person is deleted, so are all of their associated dates.
-11. I believe all that is left is to filter important people based on the username.
+11. Added filtering so that important people and thus by association, their important dates are filtered to only display if they were entered by the logged in user.
+12.  Everything is done.  There is a glitch where every once in a while, on login, the userName passes to the people page as null or undefined.  This is a problem because it does not display the associated people and thus their associated dates as it should.
