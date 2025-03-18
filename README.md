@@ -97,3 +97,5 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 7. Fixed a bug in the useEffect that was causing it to cycle faster and faster until my memory got all used up by adding ,[state] between the last two curly braces of the useEffect function.
 8. Added the ability to delete with a button either people or dates row by row.
 9. Added a button for Del and Dates on the people table and one for Del on the dates table.
+10. Made it so that if an Important Person is deleted, so are all of their associated dates.
+11. I believe all that is left is to filter important people based on the username.

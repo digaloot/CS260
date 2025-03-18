@@ -1,9 +1,20 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
+
 export function People({myName, userName, password, logout}) {
 
+  const navigate = useNavigate();
   const state = location.state;
+  const [filterPeople, setFilterPeople] = React.useState({});
+  const [nome, setNome] = React.useState(localStorage.getItem('nome') || ''); // this is their friendly name
+  const [email, setEmail] = React.useState(localStorage.getItem('email') || '');
+  const [relationship, setRelationship] = React.useState(localStorage.getItem('relationship') || '');
+  const [people, setPeople] = React.useState([]);
+  const [dates, setDates] = React.useState([]);
+  const [msg, setMsg] = React.useState('...listening');
+  const handleDates = (selectedRow) => {navigate("/dates", {state:selectedRow.nome});};
+
   const customStyles = {
     headRow: {
       style: {
@@ -50,47 +61,12 @@ export function People({myName, userName, password, logout}) {
         <span onClick={() => handleDelete(row)} className='btn btn-danger btn-sm'>Trash</span>
         </>
       ),
-      
       ignoreRowClick: true,
     }
   ]
 
-  function handleDelete(selectedRow) {
-    const newPeople = people.filter( li => li !== selectedRow)
-    setPeople(newPeople);
-    localStorage.setItem('people', JSON.stringify(newPeople));
-  }
 
-  function handleFilter(event) {
-    const newData = filterPeople.filter(row => {
-      return row.nome.toLowerCase().includes(event.target.value.toLowerCase())
-    })
-    setPeople(newData)
-  }
-
-  const navigate = useNavigate();
-
-  const handleDates = (selectedRow) => {
-    // if (selectedRows.length > 0) {
-    //   const selectedRow = selectedRows[0];
-      // Do something with the selected row data, e.g.,
-      console.log('Selected row:', [selectedRow.nome]);
-      // Pass the data to another component or update state
-      // setSelectedData(selectedRow); 
-      navigate("/dates", {state:selectedRow.nome});
-    // } else {
-    //     setSelectedData(null); // Clear data if no row is selected
-    // }
-  };
-
-  const [filterPeople, setFilterPeople] = React.useState({});
-  const [nome, setNome] = React.useState(localStorage.getItem('nome') || ''); // this is their friendly name
-  const [email, setEmail] = React.useState(localStorage.getItem('email') || '');
-  const [relationship, setRelationship] = React.useState(localStorage.getItem('relationship') || '');
-  const [people, setPeople] = React.useState([]);
-  const [msg, setMsg] = React.useState('...listening');
-
-React.useEffect(() => {
+  React.useEffect(() => {
     setInterval(() => {
       const names = [
         '  What do you call a dinosour that drives: "Tyrannosaurus Wrecks"..........Funny Score:', 
@@ -103,11 +79,42 @@ React.useEffect(() => {
       ];
       const randomName = names[Math.floor(Math.random() * names.length)];
       const randomCount = Math.floor(Math.random() * 100) + 1;
-      const newMsg = `${randomName}  ${randomCount}`;
+      const newMsg = `${randomName} ${randomCount}`;
       setMsg(newMsg);
     }, 3000);
   },[state])
 
+  React.useEffect(() => {
+    const datesText = localStorage.getItem('dates');
+    if (datesText) {
+      setDates(JSON.parse(datesText));
+    }
+  }, []);
+
+  React.useEffect(() => {
+    const peopleText = localStorage.getItem('people');
+    if (peopleText) {
+      setPeople(JSON.parse(peopleText));
+    }
+    setFilterPeople(JSON.parse(peopleText));
+  }, []);
+
+
+  function handleDelete(selectedRow) {
+    const newPeople = people.filter( li => li !== selectedRow )
+    setPeople(newPeople);
+    localStorage.setItem('people', JSON.stringify(newPeople));
+    const newDates = dates.filter( (li) => { return li.nome !== selectedRow.nome })
+    setDates(newDates);
+    localStorage.setItem('dates', JSON.stringify(newDates));
+  }
+  
+  function handleFilter(event) {
+    const newData = filterPeople.filter(row => {
+      return row.nome.toLowerCase().includes(event.target.value.toLowerCase())
+    })
+    setPeople(newData)
+  }
 
   async function savePerson() {
     const newPerson = { nome: nome, email: email, relationship: relationship };
@@ -124,15 +131,6 @@ React.useEffect(() => {
     people.push(newPerson);
     localStorage.setItem('people', JSON.stringify(people));
   }
-
-  React.useEffect(() => {
-    const peopleText = localStorage.getItem('people');
-    if (peopleText) {
-      setPeople(JSON.parse(peopleText));
-    }
-    setFilterPeople(JSON.parse(peopleText));
-  }, []);
-
   
   return (
 
@@ -199,9 +197,6 @@ React.useEffect(() => {
           columns = {columns}
           data = {people}
           fixedHeader
-          // selectableRows
-          // selectableRowsSingle
-          // onSelectedRowsChange={handleDates}
           pagination
           stripedRows 
           customStyles={customStyles}

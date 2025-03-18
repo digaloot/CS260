@@ -5,7 +5,14 @@ import DataTable from 'react-data-table-component';
 export function Dates( props ) {
   const location = useLocation();
   const state = location.state;
-  console.log(state);
+  const [dates, setDates] = React.useState([]);
+  const [filterAltDates, setFilterAltDates] = React.useState([]);
+  const [filterDates, setFilterDates] = React.useState({});
+  const [nome, setNome] = React.useState({});
+  const [msg, setMsg] = React.useState('...listening');
+  const [specialDay, setSpecialDay] = React.useState(localStorage.getItem('specialDay') || '');
+  const [mmdd, setMMDD] = React.useState(localStorage.getItem('mmdd') || '');
+  // console.log(state);
 
   const customStyles = {
     headRow: {
@@ -33,7 +40,7 @@ export function Dates( props ) {
       name: 'Nome',
       selector: row => row.nome,
       sortable: true,
-      width: "250px"
+      width: "0px"
     },
     {
       name: 'Special Day',
@@ -57,12 +64,6 @@ export function Dates( props ) {
     }
   ]
 
-  const [filterDates, setFilterDates] = React.useState({});
-  const [msg, setMsg] = React.useState('...listening');
-  const [nome, setNome] = React.useState(localStorage.getItem('nome') || '');
-  const [specialDay, setSpecialDay] = React.useState(localStorage.getItem('specialDay') || '');
-  const [mmdd, setMMDD] = React.useState(localStorage.getItem('mmdd') || '');
-  
     React.useEffect(() => {
       setInterval(() => {
         const names = [
@@ -77,63 +78,68 @@ export function Dates( props ) {
       }, 1000);
     },[state])
 
-
-      async function saveDate() {
-        const newdate = { nome: state, specialDay: specialDay, mmdd: mmdd };
-        updateDatesLocal(newdate);
-        setDates([...dates, newdate]);
-        setNome('');
-        setSpecialDay('');
-        setMMDD('');
-      }
-    
-      function updateDatesLocal(newdate) {
-        let dates = [];
-        const datesText = localStorage.getItem('dates');
-        if (datesText) {
-          dates = JSON.parse(datesText);
-        }
-        dates.push(newdate);
-        localStorage.setItem('dates', JSON.stringify(dates));
-      }
-    
-      React.useEffect(() => {
-        const datesText = localStorage.getItem('dates');
-        if (datesText) {
-          setDates(JSON.parse(datesText));
-        }
+    React.useEffect(() => {
+      const datesText = localStorage.getItem('dates');
+      if (datesText) {
+        setDates(JSON.parse(datesText));
         setFilterDates(JSON.parse(datesText));
-        // handleFilter(undefined);
-      }, []);
-
-      React.useEffect(
-        () => {
-        if (filterDates.filter)  {
-          handleFilter(undefined);
-        }},
-        [state,filterDates] // <-- empty dependency array
-      ) 
-
-      const [dates, setDates] = React.useState([]);
-      
-      function handleDelete(selectedRow) {
-        const newDates = dates.filter( li => li !== selectedRow)
-        setDates(newDates);
-        localStorage.setItem('dates', JSON.stringify(newDates));
+        setFilterAltDates(JSON.parse(datesText));
       }
+    }, []);
 
-      function handleFilter(event) {
-        const newData = filterDates.filter(row => {
-          // return row.nome.toLowerCase().includes(event.target.value.toLowerCase())
-          return row.nome.toLowerCase().includes(state.toLowerCase())
-        })
-        setDates(newData)
+    React.useEffect(
+      () => {
+        if (dates) {
+          if (filterDates.filter)  {
+            handleFilter(undefined);
+          }
+        }
+      },
+      [state,filterDates]
+    ) 
+
+    async function saveDate() {
+      const newdate = { nome: state, specialDay: specialDay, mmdd: mmdd };
+      updateDatesLocal(newdate);
+      setDates([...dates, newdate]);
+      setNome('');
+      setSpecialDay('');
+      setMMDD('');
+    }
+  
+    function updateDatesLocal(newdate) {
+      let dates = [];
+      const datesText = localStorage.getItem('dates');
+      if (datesText) {
+        dates = JSON.parse(datesText);
       }
+      dates.push(newdate);
+      localStorage.setItem('dates', JSON.stringify(dates));
+    }
+  
+    function handleDelete(selectedRow) {
+      const newDates = dates.filter( li => li !== selectedRow)
+      const allDates = [...newDates, ...filterAltDates];
+      setDates(newDates);
+      localStorage.setItem('dates', JSON.stringify(allDates));
+    }
+
+    function handleFilter(event) {
+      const filterData = filterDates.filter(row => {
+        return row.nome.toLowerCase().includes(state.toLowerCase())
+      })
+      setDates(filterData)
+
+      const filterAltData = filterAltDates.filter(row => {
+        return !row.nome.toLowerCase().includes(state.toLowerCase())
+      })
+      setFilterAltDates(filterAltData)
+    }
     
   return (
     <main className='body_items'>
       <div className='header_text'>
-      Fun fact.  The most frequently selected Important Date is: {msg}
+      Fun fact.  The most frequently selected Important Date of the year is: {msg}
         <br/>
         <br/>
       </div>
@@ -156,9 +162,9 @@ export function Dates( props ) {
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
           <button disabled={!specialDay && !mmdd} type="submit" className="btn btn-primary" onClick={(refreshPage) => saveDate()}> Add </button>
         </span>
-        <div className='text-end' onChange = {handleFilter}>
+        {/* <div className='text-end' onChange = {handleFilter}>
           <input type = 'text'  placeholder="Search..."/>
-        </div>
+        </div> */}
         <div>
           <DataTable
           columns = {columns}

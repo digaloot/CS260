@@ -1,14 +1,14 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
-
-import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Login } from './login/login';
 import { CreateAccount } from './createAccount/createAccount';
 import { People } from './people/people';
 import { Dates } from './dates/dates';
 
 export default function App() {
+
     const [myName, setMyName] = React.useState(localStorage.getItem('myName') || ''); // this is the friendly name
     const [userName, setUserName] = React.useState(localStorage.getItem('userName') || ''); // this is the username / email address
     const [password, setPassword] = React.useState(localStorage.getItem('password') || '');
