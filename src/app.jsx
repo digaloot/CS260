@@ -9,20 +9,20 @@ import { Dates } from './dates/dates';
 
 export default function App() {
 
-    const [myName, setMyName] = React.useState(localStorage.getItem('myName') || ''); // this is the friendly name
+    // const [myName, setMyName] = React.useState(localStorage.getItem('myName') || ''); // this is the friendly name
     const [userName, setUserName] = React.useState(localStorage.getItem('userName') || ''); // this is the username / email address
-    const [password, setPassword] = React.useState(localStorage.getItem('password') || '');
+    // const [password, setPassword] = React.useState(localStorage.getItem('password') || '');
 
 
     function logout() {
-        localStorage.removeItem("myName");
+        // localStorage.removeItem("myName");
         localStorage.removeItem("userName");
-        localStorage.removeItem("password");
-        localStorage.removeItem("passwordC");
+        // localStorage.removeItem("password");
+        // localStorage.removeItem("passwordC");
         props.onLogout();
     }
-
-    return (
+    
+        return (
         <BrowserRouter>
             <div className='body bg-white text-black'>    
 
@@ -32,7 +32,7 @@ export default function App() {
                         element={
                             <Login 
                                 setUserName={setUserName} 
-                                setPassword={setPassword}
+                                // setPassword={setPassword}
                                 logout={logout}
                             />
                         } 
@@ -42,9 +42,11 @@ export default function App() {
                         path='/createAccount' 
                         element={
                             <CreateAccount 
-                                setMyName={setMyName}
+                                // setMyName={setMyName}
                                 setUserName={setUserName} 
-                                setPassword={setPassword}
+                                // setPassword={setPassword}
+                                // saveUser={saveUser}
+                                logout={logout}
                             />
                         } 
                     />
@@ -52,9 +54,9 @@ export default function App() {
                         path='/people' 
                         element={
                             <People  
-                                myName={myName} 
-                                userName={userName} 
-                                password={password}
+                                // myName={myName} 
+                                // userName={userName} 
+                                // password={password}
                                 logout={logout}
                             />
                         } 
@@ -63,7 +65,9 @@ export default function App() {
                         path='/dates' 
                         element={
                             <Dates 
-                            userName={userName} 
+                            // myName={myName}
+                            // userName={userName} 
+                            logout={logout}
                             />
                         } 
                     />

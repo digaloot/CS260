@@ -1,47 +1,76 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
 
-export function CreateAccount({setMyName, setUserName, setPassword, logout}) {
+export function CreateAccount({setUserName, logout}) {
 
-  const [n, setN] = React.useState(' ');
-  const [u, setU] = React.useState(' ');
-  const [pw, setPW] = React.useState(' ');
-  const [pwc, setPWConfirm] = React.useState(' ');
-
-  function loginUser() {
-      // console.log('login' + text);
-      localStorage.setItem('name', n);
-      localStorage.setItem('user', u);
-      localStorage.setItem('password', pw);
-      localStorage.setItem('passwordC', pwc);
-      setMyName(n);
-      setUserName(u);
-      setPassword(pw);
-    }
+  const [users, setUsers] = React.useState([]);
+  const [filterUsers, setFilterUsers] = React.useState({});
+  const [n, setN] = React.useState('');
+  const [u, setU] = React.useState('');
+  const [pw, setPW] = React.useState('');
+  const [pwc, setPWConfirm] = React.useState('');
+  const state = location.state;
+  const [isVisible, setIsVisible] = useState(false);
 
   function nChange(e) {
     setN(e.target.value);
-    // localStorage.setItem('name', u);
-    // console.log(e.target.value);
   }
 
   function uChange(e) {
     setU(e.target.value);
-    // localStorage.setItem('user', u);
-    // console.log(e.target.value);
   }
 
   function pwChange(e) {
         setPW(e.target.value);
-        // localStorage.setItem('password', pw);
   }
 
   function pwChangeConfirm(e) {
     setPWConfirm(e.target.value);
-    // localStorage.setItem('passwordC', pwc);
   }
 
-return (
+  async function saveUser() {
+    const newUser = { myName: n, userName: u, password: pw };
+    updateUsersLocal(newUser);
+    setUsers([...users, newUser]);
+    localStorage.setItem('userName', u);
+    setUserName(u);
+  }
+
+  function updateUsersLocal(newUser) {
+    let users = [];
+    const usersText = localStorage.getItem('users');
+    if (usersText) {
+      users = JSON.parse(usersText);
+    }
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+  }
+
+    React.useEffect(() => {
+      const usersText = localStorage.getItem('users');
+      if (usersText) {
+        setUsers(JSON.parse(usersText));
+        setFilterUsers(JSON.parse(usersText));
+      }
+    }, []);
+
+    React.useEffect(
+      () => {
+        if (users && u) {
+          if (filterUsers.filter)  {
+            handleFilter(undefined);
+          }
+        }
+      },
+    ) 
+
+    function handleFilter(event) {
+      const filterData = filterUsers.filter(row => {return row.userName.toLowerCase() === u.toLowerCase()})
+      if(filterData.length) setIsVisible(true)
+      else setIsVisible(false)
+    }
+    
+    return (
     <main className='container-fluid bg-secondary text-center'>
       <div className="row">
         <div className="column">
@@ -72,7 +101,7 @@ return (
             <div className="right_half_title">
               Create an account
             </div>
-            <p className="assignment">Create your account, it takes less than a minute.  If you already have an account, <NavLink  onClick={logout} to='/'>login</NavLink>!</p>
+            <p className="assignment">Create your account, it takes less than a minute.  If you already have an account, <NavLink  onClick={logout} to='/'>login</NavLink>!  All fields are required.  Passwords must match.</p>
             <div className="input-group mb-3">
               <input className="form-control" type="text" onChange={nChange} placeholder="your name" />
             </div>
@@ -88,11 +117,18 @@ return (
                 <span className="input-group-text">🔒</span>
                 <input className="form-control" type="password" onChange={pwChangeConfirm} placeholder="confirm password" />
             </div>
-                    {u != '' && pw != '' && pw == pwc && <NavLink to="/people">
-                        <button type="submit" className="btn btn-primary" onClick={loginUser}>
-                            Sign Up
-                        </button>
-                    </NavLink>}
+            <div>
+              {isVisible && (
+                <div>
+                  <p>Username already exists.</p>
+                </div>
+              )}
+            </div>
+            {!isVisible && n != '' && u != '' && pw != '' && pw === pwc && <NavLink to="/people">
+              <button type="submit" className="btn btn-primary" onClick={saveUser}>
+                Sign Up
+              </button>
+            </NavLink>}
           </div>
         </div>
       </div>

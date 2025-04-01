@@ -1,14 +1,16 @@
 import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 
-export function Dates({ props, userName }) {
+export function Dates({ logout }) {
 
+  const navigate = useNavigate();
   const location = useLocation();
   const state = location.state;
   const [dates, setDates] = React.useState([]);
   const [filterAltDates, setFilterAltDates] = React.useState([]);
   const [filterDates, setFilterDates] = React.useState({});
+  const userName = localStorage.getItem('userName');
   const [userNome, setUserNome] = React.useState({});
   const [nome, setNome] = React.useState({});
   const [msg, setMsg] = React.useState('...listening');
@@ -85,6 +87,13 @@ export function Dates({ props, userName }) {
         setMsg(newMsg);
       }, 1000);
     },[state])
+
+  React.useEffect(() => {
+    if(!userName) {
+      logout
+      navigate("/")
+    }
+  })
 
     React.useEffect(() => {
       const datesText = localStorage.getItem('dates');

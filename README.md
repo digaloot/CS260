@@ -100,3 +100,5 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 10. Made it so that if an Important Person is deleted, so are all of their associated dates.
 11. Added filtering so that important people and thus by association, their important dates are filtered to only display if they were entered by the logged in user.
 12.  Everything is done.  There is a glitch where every once in a while, on login, the userName passes to the people page as null or undefined.  This is a problem because it does not display the associated people and thus their associated dates as it should.
+13. I added functionality to check username and password at login for actual values stored in the localStorage.  If they don't exist then a message displays saying wrong username or password.  Try again.
+14. I added functionality to check for an existing username as a conflict when creating a new account.

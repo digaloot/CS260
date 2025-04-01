@@ -1,31 +1,73 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 
-export function Login({ setUserName, setPassword, logout }) {
+export function Login({ setUserName, logout }) {
 
-        const [u, setU] = React.useState('');
-        const [pw, setPW] = React.useState('');
+  const [users, setUsers] = React.useState([]);
+  const [u, setU] = React.useState('');
+  const [pw, setPW] = React.useState('');
+  const [filterUsers, setFilterUsers] = React.useState({});
+  const [noUser, setNoUser] = useState(false);
+  const [wrongPassword, setWrongPassword] = useState(false);
+  const [displayWrongPW, setDisplayWrongPW] = useState(false);
+  const navigate = useNavigate();
 
     function loginUser() {
-    // console.log('login' + text);
-    localStorage.setItem('userName', u);
-    localStorage.setItem('password', pw);
-    setUserName(u);
-    setPassword(pw);
-  }
+        if(!wrongPassword && !noUser) {
+            localStorage.setItem('userName', u);
+            setUserName(u);
+            navigate('/people')
+        }
+        else
+            setDisplayWrongPW(true)
+    }
 
     function uChange(e) {
         setU(e.target.value);
-        // localStorage.setItem('userName', u);
-        // console.log(e.target.value);
+        setDisplayWrongPW(false)
     }
     function pwChange(e) {
         setPW(e.target.value);
-        // localStorage.setItem('password', pw);
+        setDisplayWrongPW(false)
     }
 
-  return (
+    React.useEffect(() => {
+      const usersText = localStorage.getItem('users');
+      if (usersText) {
+        setUsers(JSON.parse(usersText));
+        setFilterUsers(JSON.parse(usersText));
+      }
+    }, []);
+
+    React.useEffect(
+        () => {
+            if (users && u) {
+                if (filterUsers.filter)  {
+                handleUserFilter(undefined);
+                }
+            }
+            if (users && pw) {
+                if (filterUsers.filter)  {
+                handlePWFilter(undefined);
+                }
+            }
+        },
+    ) 
+
+    function handleUserFilter(event) {
+        const filterData = filterUsers.filter(row => {return row.userName.toLowerCase() === u.toLowerCase()})
+        if(!filterData.length) setNoUser(true)
+        else setNoUser(false)
+      }
+      
+    function handlePWFilter(event) {
+        const filterData = filterUsers.filter(row => {return row.password.toLowerCase() === pw.toLowerCase()})
+        if(!filterData.length) setWrongPassword(true)
+        else setWrongPassword(false)
+    }
+      
+      return (
     <main className='container-fluid bg-secondary text-center'>
         <div className="row">
             <div className="column">
@@ -62,11 +104,25 @@ export function Login({ setUserName, setPassword, logout }) {
                         <span className="input-group-text">🔒</span>
                         <input className="form-control" type="password" onChange={pwChange} placeholder="password" />
                     </div>
-                    { u != '' && pw != '' && <NavLink to="/people">
-                        <button type="submit" className="btn btn-primary" onClick={loginUser}>
+                    {/* <div>
+                        {noUser && (
+                            <div>
+                                <p>Username does not exists.</p>
+                            </div>
+                        )}
+                    </div> */}
+                    <div>
+                        {displayWrongPW && (
+                            <div>
+                                <p>Incorrect username or password.  Try again.</p>
+                            </div>
+                        )}
+                    </div>
+                    {/* { !noUser &&  u != '' && pw != '' && <NavLink to="/people"> */}
+                        { u != '' && pw != '' && <button type="submit" className="btn btn-primary" onClick={loginUser}>
                             Login
-                        </button>
-                    </NavLink>}
+                        </button>}
+                    {/* </NavLink>} */}
                 </div>
             </div>
         </div>

@@ -2,13 +2,13 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 
-export function People({myName, userName, password, logout}) {
-  console.log("username: ", userName)
+export function People({ logout }) {
 
   const navigate = useNavigate();
   const state = location.state;
   const [filterPeople, setFilterPeople] = React.useState({});
-  const [userNome, setUserNome] = React.useState({});
+  // const [userNome, setUserNome] = React.useState({});
+  const userName = localStorage.getItem('userName');
   const [nome, setNome] = React.useState(localStorage.getItem('nome') || ''); // this is their friendly name
   const [email, setEmail] = React.useState(localStorage.getItem('email') || '');
   const [relationship, setRelationship] = React.useState(localStorage.getItem('relationship') || '');
@@ -94,6 +94,13 @@ export function People({myName, userName, password, logout}) {
   },[state])
 
   React.useEffect(() => {
+    if(!userName) {
+      logout
+      navigate("/")
+    }
+  })
+
+  React.useEffect(() => {
     const datesText = localStorage.getItem('dates');
     if (datesText) {
       setDates(JSON.parse(datesText));
@@ -166,6 +173,7 @@ export function People({myName, userName, password, logout}) {
     localStorage.setItem('people', JSON.stringify(people));
   }
   
+  // console.log("username: ", userName)
   return (
 
     <main>
