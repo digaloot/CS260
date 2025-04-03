@@ -103,3 +103,8 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 13. I added functionality to check username and password at login for actual values stored in the localStorage.  If they don't exist then a message displays saying wrong username or password.  Try again.
 14. I added functionality to check for an existing username as a conflict when creating a new account.
 15. This finishes everything so that the React2 homework assignment is complete
+
+
+## Notes Specific to the Service Assignment
+1. Added the service folder, installed npm in it and added the index.js file.  For now I just copied the one from Simon and will be modifying it as I go.
+2.  Currently working on the useEffect lines in People and Dates.
