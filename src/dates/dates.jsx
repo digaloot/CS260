@@ -95,14 +95,24 @@ export function Dates({ logout }) {
     }
   })
 
-    React.useEffect(() => {
-      const datesText = localStorage.getItem('dates');
-      if (datesText) {
-        setDates(JSON.parse(datesText));
-        setFilterDates(JSON.parse(datesText));
-        setFilterAltDates(JSON.parse(datesText));
-      }
-    }, []);
+    // React.useEffect(() => {
+    //   const datesText = localStorage.getItem('dates');
+    //   if (datesText) {
+    //     setDates(JSON.parse(datesText));
+    //     setFilterDates(JSON.parse(datesText));
+    //     setFilterAltDates(JSON.parse(datesText));
+    //   }
+    // }, []);
+
+  React.useEffect(() => {
+    fetch('/api/dates')
+      .then((response) => response.json())
+      .then((dates) => {
+        setDates(dates);
+        setFilterDates(dates);
+        setFilterAltDates(dates);
+        });
+  }, []);
 
     React.useEffect(
       () => {

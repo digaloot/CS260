@@ -100,20 +100,38 @@ export function People({ logout }) {
     }
   })
 
-  React.useEffect(() => {
-    const datesText = localStorage.getItem('dates');
-    if (datesText) {
-      setDates(JSON.parse(datesText));
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   const datesText = localStorage.getItem('dates');
+  //   if (datesText) {
+  //     setDates(JSON.parse(datesText));
+  //   }
+  // }, []);
 
   React.useEffect(() => {
-    const peopleText = localStorage.getItem('people');
-    if (peopleText) {
-      setPeople(JSON.parse(peopleText));
-      setFilterPeople(JSON.parse(peopleText));
-      setFilterAltPeople(JSON.parse(peopleText));
-    }
+    fetch('/api/dates')
+      .then((response) => response.json())
+      .then((dates) => {
+        setDates(dates);
+      });
+  }, []);
+
+  // React.useEffect(() => {
+  //   const peopleText = localStorage.getItem('people');
+  //   if (peopleText) {
+  //     setPeople(JSON.parse(peopleText));
+  //     setFilterPeople(JSON.parse(peopleText));
+  //     setFilterAltPeople(JSON.parse(peopleText));
+  //   }
+  // }, []);
+
+  React.useEffect(() => {
+    fetch('/api/people')
+      .then((response) => response.json())
+      .then((people) => {
+        setPeople(people);
+        setFilterPeople(people);
+        setFilterAltPeople(people);
+        });
   }, []);
 
     React.useEffect(
@@ -158,9 +176,16 @@ export function People({ logout }) {
 
   async function savePerson() {
     const newPerson = { userNome: userName, nome: nome, email: email, relationship: relationship };
-    updatePeopleLocal(newPerson);
+    // updatePeopleLocal(newPerson);
+    await fetch('/api/person', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(newPerson),
+    });
+    console.log(newPerson);
+
     setPeople([...people, newPerson]);
-    setUserNome('');
+    // setUserNome('');
   }
 
   function updatePeopleLocal(newPerson) {

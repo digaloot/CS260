@@ -81,13 +81,22 @@ apiRouter.post('/auth/create', async (req, res) => {
 
 
   // GetPeople
-  apiRouter.get('/people', verifyAuth, (_req, res) => {
+  apiRouter.get('/people', (_req, res) => {
     console.log("In People")
     res.send(people);
     });
  
+  // SubmitPerson
+  apiRouter.post('/person', (req, res) => {
+    people = updatePeople(req.body);
+    res.send(people);
+  });
+
+
+
+
   // GetDates
-  apiRouter.get('/dates', verifyAuth, (_req, res) => {
+  apiRouter.get('/dates', (_req, res) => {
     console.log("In Dates")
     res.send(people);
   });
@@ -98,6 +107,9 @@ apiRouter.get('/test', (_req, res) => {
   console.log("In Test")
   res.send(testData);
 });
+
+
+
 
   // SubmitScore
   apiRouter.post('/score', verifyAuth, (req, res) => {
@@ -114,6 +126,9 @@ apiRouter.get('/test', (_req, res) => {
   app.use((_req, res) => {
     res.sendFile('index.html', { root: 'public' });
   });
+
+
+
 
 // updateScores considers a new score for inclusion in the high scores.
 function updateScores(newScore) {
