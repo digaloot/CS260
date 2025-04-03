@@ -87,10 +87,34 @@ apiRouter.post('/auth/create', async (req, res) => {
     });
  
   // SubmitPerson
-  apiRouter.post('/person', (req, res) => {
+  apiRouter.post('/addPerson', (req, res) => {
     people = updatePeople(req.body);
     res.send(people);
   });
+
+  function updatePeople(newPerson) {
+    people.push(newPerson);
+    return people;
+  }
+
+    // DeletePerson
+    apiRouter.delete('/deletePerson', (req, res) => {
+        // people = updatePeople(req.body);
+        console.log(req.body.nome)
+        // people.delete(req.body)
+        res.send(people);
+      });
+    
+//   app.delete('/posts/:id', (req, res) =&gt; {
+//     posts = posts
+//         .filter(p =&gt; p.id !== parseInt(req.params.id));
+//     res.status(204).send();
+// });
+
+
+
+
+
 
 
 
@@ -98,7 +122,7 @@ apiRouter.post('/auth/create', async (req, res) => {
   // GetDates
   apiRouter.get('/dates', (_req, res) => {
     console.log("In Dates")
-    res.send(people);
+    res.send(dates);
   });
   
  // GetTest

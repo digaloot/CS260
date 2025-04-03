@@ -145,11 +145,19 @@ export function People({ logout }) {
       [filterPeople]
     ) 
 
-  function handleDelete(selectedRow) {
+  async function handleDelete(selectedRow) {
     const newPeople = people.filter( li => li !== selectedRow )
     const allPeople = [...newPeople, ...filterAltPeople];
     setPeople(newPeople);
     localStorage.setItem('people', JSON.stringify(allPeople));
+
+    await fetch('/api/deletePerson', {
+      method: 'DELETE',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(selectedRow),
+    });
+
+
     const newDates = dates.filter( (li) => { return li.nome !== selectedRow.nome })
     setDates(newDates);
     localStorage.setItem('dates', JSON.stringify(newDates));
@@ -177,26 +185,26 @@ export function People({ logout }) {
   async function savePerson() {
     const newPerson = { userNome: userName, nome: nome, email: email, relationship: relationship };
     // updatePeopleLocal(newPerson);
-    await fetch('/api/person', {
+    await fetch('/api/addPerson', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(newPerson),
     });
-    console.log(newPerson);
+    // console.log(newPerson);
 
     setPeople([...people, newPerson]);
     // setUserNome('');
   }
 
-  function updatePeopleLocal(newPerson) {
-    let people = [];
-    const peopleText = localStorage.getItem('people');
-    if (peopleText) {
-      people = JSON.parse(peopleText);
-    }
-    people.push(newPerson);
-    localStorage.setItem('people', JSON.stringify(people));
-  }
+  // function updatePeopleLocal(newPerson) {
+  //   let people = [];
+  //   const peopleText = localStorage.getItem('people');
+  //   if (peopleText) {
+  //     people = JSON.parse(peopleText);
+  //   }
+  //   people.push(newPerson);
+  //   localStorage.setItem('people', JSON.stringify(people));
+  // }
   
   // console.log("username: ", userName)
   return (
