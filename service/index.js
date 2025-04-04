@@ -80,36 +80,27 @@ apiRouter.post('/auth/create', async (req, res) => {
 
 
 
-  // GetPeople
-  apiRouter.get('/people', (_req, res) => {
+// GetPeople
+apiRouter.get('/people', (_req, res) => {
     console.log("In People")
     res.send(people);
-    });
+});
  
-  // SubmitPerson
-  apiRouter.post('/addPerson', (req, res) => {
-    people = updatePeople(req.body);
+// SubmitPerson
+apiRouter.post('/addPerson', (req, res) => {
+    people.push(req.body);
     res.send(people);
-  });
+});
 
-  function updatePeople(newPerson) {
-    people.push(newPerson);
-    return people;
-  }
-
-    // DeletePerson
-    apiRouter.delete('/deletePerson', (req, res) => {
-        // people = updatePeople(req.body);
-        console.log(req.body.nome)
-        // people.delete(req.body)
-        res.send(people);
-      });
+// DeletePerson
+apiRouter.delete('/deletePerson', (req, res) => {
+    const newPeople = people.filter((person) => 
+        JSON.stringify(person) != JSON.stringify(req.body)
+    );
+    people = newPeople
+    res.send(people);
+});
     
-//   app.delete('/posts/:id', (req, res) =&gt; {
-//     posts = posts
-//         .filter(p =&gt; p.id !== parseInt(req.params.id));
-//     res.status(204).send();
-// });
 
 
 

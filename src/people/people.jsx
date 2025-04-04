@@ -146,16 +146,23 @@ export function People({ logout }) {
     ) 
 
   async function handleDelete(selectedRow) {
-    const newPeople = people.filter( li => li !== selectedRow )
-    const allPeople = [...newPeople, ...filterAltPeople];
-    setPeople(newPeople);
-    localStorage.setItem('people', JSON.stringify(allPeople));
+    // const newPeople = people.filter( li => li !== selectedRow )
+    // const allPeople = [...newPeople, ...filterAltPeople];
+    // setPeople(newPeople);
+    // localStorage.setItem('people', JSON.stringify(allPeople));
 
     await fetch('/api/deletePerson', {
       method: 'DELETE',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(selectedRow),
-    });
+    })
+    
+    const response = await fetch('/api/people')
+    const people = await response.json()
+    setPeople(people);
+    setFilterPeople(people);
+    setFilterAltPeople(people);
+
 
 
     const newDates = dates.filter( (li) => { return li.nome !== selectedRow.nome })
@@ -192,7 +199,7 @@ export function People({ logout }) {
     });
     // console.log(newPerson);
 
-    setPeople([...people, newPerson]);
+    // setPeople([...people, newPerson]);
     // setUserNome('');
   }
 
