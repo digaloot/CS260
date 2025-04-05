@@ -16,8 +16,8 @@ export function People({ logout }) {
   const [people, setPeople] = React.useState([]);
   const [dates, setDates] = React.useState([]);
   const [msg, setMsg] = React.useState('...listening');
-  const handleDates = (selectedRow) => {navigate("/dates", {state:selectedRow.nome});};
 
+  
   const customStyles = {
     headRow: {
       style: {
@@ -107,13 +107,15 @@ export function People({ logout }) {
   //   }
   // }, []);
 
-  React.useEffect(() => {
-    fetch('/api/dates')
-      .then((response) => response.json())
-      .then((dates) => {
-        setDates(dates);
-      });
-  }, []);
+  /***********************************************************************/
+  // React.useEffect(() => {
+  //   fetch('/api/dates')
+  //     .then((response) => response.json())
+  //     .then((dates) => {
+  //       setDates(dates);
+  //     });
+  // }, []);
+  /***********************************************************************/
 
   // React.useEffect(() => {
   //   const peopleText = localStorage.getItem('people');
@@ -129,8 +131,6 @@ export function People({ logout }) {
       .then((response) => response.json())
       .then((people) => {
         setPeople(people);
-        setFilterPeople(people);
-        setFilterAltPeople(people);
         });
   }, []);
 
@@ -145,6 +145,17 @@ export function People({ logout }) {
       [filterPeople]
     ) 
 
+  // const handleDates = (selectedRow) => {navigate("/dates", {state:selectedRow.nome});};
+
+    async function handleDates(selectedRow) {
+      // const response = await fetch(`/api/datesFiltered`, {
+      //   method: 'post',
+      //   headers: { 'Content-type': 'application/json; charset=UTF-8', },
+      //   body: JSON.stringify(selectedRow),
+      // });
+      navigate("/dates", {state:selectedRow.nome})
+    }
+
   async function handleDelete(selectedRow) {
     // const newPeople = people.filter( li => li !== selectedRow )
     // const allPeople = [...newPeople, ...filterAltPeople];
@@ -156,7 +167,6 @@ export function People({ logout }) {
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(selectedRow),
     })
-    
     const response = await fetch('/api/people')
     const people = await response.json()
     setPeople(people);
@@ -165,9 +175,9 @@ export function People({ logout }) {
 
 
 
-    const newDates = dates.filter( (li) => { return li.nome !== selectedRow.nome })
-    setDates(newDates);
-    localStorage.setItem('dates', JSON.stringify(newDates));
+    // const newDates = dates.filter( (li) => { return li.nome !== selectedRow.nome })
+    // setDates(newDates);
+    // localStorage.setItem('dates', JSON.stringify(newDates));
   }
   
   function handleFilter(event) {

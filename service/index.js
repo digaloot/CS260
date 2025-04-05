@@ -81,10 +81,16 @@ apiRouter.post('/auth/create', async (req, res) => {
 
 // GetPeople
 apiRouter.get('/people', (_req, res) => {
-    console.log("In People")
+    // console.log("In People")
     res.send(people);
 });
  
+// Get people filtered by the username
+apiRouter.post('/peopleFiltered', async (req, res) => {
+    const newPeople = await findPeople("userNome", req.body.userNome);
+    res.send(newPeople);
+});
+
 // SubmitPerson
 apiRouter.post('/addPerson', (req, res) => {
     people.push(req.body);
@@ -104,16 +110,40 @@ apiRouter.delete('/deletePerson', (req, res) => {
 
 
 
-
-
-
-
-
-  // GetDates
-  apiRouter.get('/dates', (_req, res) => {
-    console.log("In Dates")
+// GetDates
+apiRouter.get('/dates', (req, res) => {
     res.send(dates);
-  });
+});
+
+// Get dates filtered by the important person and username
+apiRouter.post('/datesFiltered', async (req, res) => {
+    const newDates = await findDates("nome", req.body.nome, "userNome", req.body.userNome);
+    res.send(newDates);
+});
+    
+// SubmitDate
+apiRouter.post('/addDate', (req, res) => {
+    dates.push(req.body);
+    res.send(dates);
+});
+
+// DeleteDate
+apiRouter.delete('/deleteDate', (req, res) => {
+    const newDates = dates.filter((date) => 
+        JSON.stringify(date) != JSON.stringify(req.body)
+    );
+    dates = newDates
+    res.send(dates);
+});
+    
+
+
+
+
+
+
+
+
   
 //  // GetTest
 // var testData = {test:"testdata"};
@@ -154,10 +184,19 @@ apiRouter.delete('/deletePerson', (req, res) => {
   
   async function findUser(field, value) {
     if (!value) return null;
-  
     return users.find((u) => u[field] === value);
   }
+
+  async function findPeople(field1, value1) {
+    if (!value1) return null;
+    return people.filter((u) => u[field1] === value1);
+  }
   
+  async function findDates(field1, value1, field2, value2) {
+    if (!value1) return null;
+    return dates.filter((u) => u[field1] === value1 && u[field2] === value2);
+  }
+
   // setAuthCookie in the HTTP response
   function setAuthCookie(res, authToken) {
     res.cookie(authCookieName, authToken, {

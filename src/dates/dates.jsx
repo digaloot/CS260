@@ -16,8 +16,7 @@ export function Dates({ logout }) {
   const [msg, setMsg] = React.useState('...listening');
   const [specialDay, setSpecialDay] = React.useState(localStorage.getItem('specialDay') || '');
   const [mmdd, setMMDD] = React.useState(localStorage.getItem('mmdd') || '');
-  // console.log(state, userName);
-
+  
   const customStyles = {
     headRow: {
       style: {
@@ -104,47 +103,70 @@ export function Dates({ logout }) {
     //   }
     // }, []);
 
+  // React.useEffect(() => {
+  //   fetch('/api/dates')
+  //     .then((response) => response.json())
+  //     .then((newDates) => {
+  //       setDates(newDates);
+  //       // console.log(newDates)
+  //       });
+  // }, []);
+
   React.useEffect(() => {
-    fetch('/api/dates')
-      .then((response) => response.json())
-      .then((dates) => {
-        setDates(dates);
-        setFilterDates(dates);
-        setFilterAltDates(dates);
-        });
+    const newData = {userNome: userName, nome: state}
+    fetch(`/api/datesFiltered`, {
+      method: 'POST',
+      headers: { 'Content-type': 'application/json; charset=UTF-8', },
+      body: JSON.stringify(newData),
+    }).then((response) => {return response.json()}).then(json => {setDates(json);})
   }, []);
 
-    React.useEffect(
-      () => {
-        if (dates) {
-          if (filterDates.filter)  {
-            handleFilter(undefined);
-          }
-        }
-      },
-      [state,filterDates]
-    ) 
+    // React.useEffect(
+    //   () => {
+    //     if (dates) {
+    //       if (filterDates.filter)  {
+    //         handleFilter(undefined);
+    //       }
+    //     }
+    //   },
+    //   [state,filterDates]
+    // ) 
+
+    // async function saveDate() {
+    //   const newdate = { userNome: userName, nome: state, specialDay: specialDay, mmdd: mmdd };
+    //   updateDatesLocal(newdate);
+    //   setDates([...dates, newdate]);
+    //   setUserNome('');
+    //   setNome('');
+    //   setSpecialDay('');
+    //   setMMDD('');
+    //   // console.log(userName);
+    // }
 
     async function saveDate() {
-      const newdate = { userNome: userName, nome: state, specialDay: specialDay, mmdd: mmdd };
-      updateDatesLocal(newdate);
-      setDates([...dates, newdate]);
-      setUserNome('');
-      setNome('');
-      setSpecialDay('');
-      setMMDD('');
-      // console.log(userName);
-    }
-  
-    function updateDatesLocal(newdate) {
-      let dates = [];
-      const datesText = localStorage.getItem('dates');
-      if (datesText) {
-        dates = JSON.parse(datesText);
+      const newDate = { userNome: userName, nome: state, specialDay: specialDay, mmdd: mmdd };
+      await fetch('/api/addDate', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(newDate),
+      });
+      const newData = {userNome: userName, nome: state}
+      fetch(`/api/datesFiltered`, {
+        method: 'POST',
+        headers: { 'Content-type': 'application/json; charset=UTF-8', },
+        body: JSON.stringify(newData),
+      }).then((response) => {return response.json()}).then(json => {setDates(json);})
       }
-      dates.push(newdate);
-      localStorage.setItem('dates', JSON.stringify(dates));
-    }
+      
+    // function updateDatesLocal(newdate) {
+    //   let dates = [];
+    //   const datesText = localStorage.getItem('dates');
+    //   if (datesText) {
+    //     dates = JSON.parse(datesText);
+    //   }
+    //   dates.push(newdate);
+    //   localStorage.setItem('dates', JSON.stringify(dates));
+    // }
   
     function handleDelete(selectedRow) {
       const newDates = dates.filter( li => li !== selectedRow)
