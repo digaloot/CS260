@@ -108,3 +108,4 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 ## Notes Specific to the Service Assignment
 1. Added the service folder, installed npm in it and added the index.js file.  For now I just copied the one from Simon and will be modifying it as I go.
 2. I have the people page working.  Now working on the login working with the API
+3. Login and Create User pages are working.  Now moving on to dates.

@@ -4,27 +4,29 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 export function Login({ setUserName, logout }) {
 
-  const [users, setUsers] = React.useState([]);
-  const [u, setU] = React.useState('');
+  const [e, setE] = React.useState('');
   const [pw, setPW] = React.useState('');
-  const [filterUsers, setFilterUsers] = React.useState({});
-  const [noUser, setNoUser] = useState(false);
-  const [wrongPassword, setWrongPassword] = useState(false);
   const [displayWrongPW, setDisplayWrongPW] = useState(false);
   const navigate = useNavigate();
 
-    function loginUser() {
-        if(!wrongPassword && !noUser) {
-            localStorage.setItem('userName', u);
-            setUserName(u);
-            navigate('/people')
+    async function loginUser() {
+        const response = await fetch(`/api/auth/login`, {
+          method: 'post',
+          headers: { 'Content-type': 'application/json; charset=UTF-8', },
+          body: JSON.stringify({ email: e, password: pw }),
+        });
+        if (response?.status === 200) {
+            setDisplayWrongPW(false);
+          localStorage.setItem('userName', e);
+          navigate("/people")
+        } else {
+          const body = await response.json();
+          setDisplayWrongPW(true);
         }
-        else
-            setDisplayWrongPW(true)
-    }
-
+      }
+        
     function uChange(e) {
-        setU(e.target.value);
+        setE(e.target.value);
         setDisplayWrongPW(false)
     }
     function pwChange(e) {
@@ -32,41 +34,6 @@ export function Login({ setUserName, logout }) {
         setDisplayWrongPW(false)
     }
 
-    React.useEffect(() => {
-      const usersText = localStorage.getItem('users');
-      if (usersText) {
-        setUsers(JSON.parse(usersText));
-        setFilterUsers(JSON.parse(usersText));
-      }
-    }, []);
-
-    React.useEffect(
-        () => {
-            if (users && u) {
-                if (filterUsers.filter)  {
-                handleUserFilter(undefined);
-                }
-            }
-            if (users && pw) {
-                if (filterUsers.filter)  {
-                handlePWFilter(undefined);
-                }
-            }
-        },
-    ) 
-
-    function handleUserFilter(event) {
-        const filterData = filterUsers.filter(row => {return row.userName.toLowerCase() === u.toLowerCase()})
-        if(!filterData.length) setNoUser(true)
-        else setNoUser(false)
-      }
-      
-    function handlePWFilter(event) {
-        const filterData = filterUsers.filter(row => {return row.password.toLowerCase() === pw.toLowerCase()})
-        if(!filterData.length) setWrongPassword(true)
-        else setWrongPassword(false)
-    }
-      
       return (
     <main className='container-fluid bg-secondary text-center'>
         <div className="row">
@@ -104,13 +71,6 @@ export function Login({ setUserName, logout }) {
                         <span className="input-group-text">🔒</span>
                         <input className="form-control" type="password" onChange={pwChange} placeholder="password" />
                     </div>
-                    {/* <div>
-                        {noUser && (
-                            <div>
-                                <p>Username does not exists.</p>
-                            </div>
-                        )}
-                    </div> */}
                     <div>
                         {displayWrongPW && (
                             <div>
@@ -118,11 +78,9 @@ export function Login({ setUserName, logout }) {
                             </div>
                         )}
                     </div>
-                    {/* { !noUser &&  u != '' && pw != '' && <NavLink to="/people"> */}
-                        { u != '' && pw != '' && <button type="submit" className="btn btn-primary" onClick={loginUser}>
-                            Login
-                        </button>}
-                    {/* </NavLink>} */}
+                    <button disabled={e == '' || pw == '' } type="submit" className="btn btn-primary" onClick={loginUser}>
+                        Login
+                    </button>
                 </div>
             </div>
         </div>

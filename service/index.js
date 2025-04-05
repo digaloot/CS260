@@ -36,13 +36,12 @@ apiRouter.post('/auth/create', async (req, res) => {
     if (await findUser('email', req.body.email)) {
       res.status(409).send({ msg: 'Existing user' });
     } else {
-      const user = await createUser(req.body.email, req.body.password);
-  
+      const user = await createUser(req.body.myName, req.body.email, req.body.password);
       setAuthCookie(res, user.token);
       res.send({ email: user.email });
     }
   });
-  
+
   // GetAuth login an existing user
   apiRouter.post('/auth/login', async (req, res) => {
     const user = await findUser('email', req.body.email);
@@ -116,22 +115,16 @@ apiRouter.delete('/deletePerson', (req, res) => {
     res.send(dates);
   });
   
- // GetTest
-var testData = {test:"testdata"};
-apiRouter.get('/test', (_req, res) => {
-  console.log("In Test")
-  res.send(testData);
-});
+//  // GetTest
+// var testData = {test:"testdata"};
+// apiRouter.get('/test', (_req, res) => {
+//   console.log("In Test")
+//   res.send(testData);
+// });
 
 
 
 
-  // SubmitScore
-  apiRouter.post('/score', verifyAuth, (req, res) => {
-    scores = updateScores(req.body);
-    res.send(scores);
-  });
-  
   // Default error handler
   app.use(function (err, req, res, next) {
     res.status(500).send({ type: err.name, message: err.message });
@@ -145,32 +138,11 @@ apiRouter.get('/test', (_req, res) => {
 
 
 
-// updateScores considers a new score for inclusion in the high scores.
-function updateScores(newScore) {
-    let found = false;
-    for (const [i, prevScore] of scores.entries()) {
-      if (newScore.score > prevScore.score) {
-        scores.splice(i, 0, newScore);
-        found = true;
-        break;
-      }
-    }
-  
-    if (!found) {
-      scores.push(newScore);
-    }
-  
-    if (scores.length > 10) {
-      scores.length = 10;
-    }
-  
-    return scores;
-  }
-  
-  async function createUser(email, password) {
+  async function createUser(myName, email, password) {
     const passwordHash = await bcrypt.hash(password, 10);
   
     const user = {
+      myName: myName,
       email: email,
       password: passwordHash,
       token: uuid.v4(),

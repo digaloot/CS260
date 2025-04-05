@@ -14,14 +14,27 @@ export default function App() {
     // const [password, setPassword] = React.useState(localStorage.getItem('password') || '');
 
 
+    // function logout() {
+    //     // localStorage.removeItem("myName");
+    //     localStorage.removeItem("userName");
+    //     // localStorage.removeItem("password");
+    //     // localStorage.removeItem("passwordC");
+    //     props.onLogout();
+    // }
+
     function logout() {
-        // localStorage.removeItem("myName");
-        localStorage.removeItem("userName");
-        // localStorage.removeItem("password");
-        // localStorage.removeItem("passwordC");
-        props.onLogout();
-    }
-    
+        fetch(`/api/auth/logout`, {
+          method: 'delete',
+        })
+          .catch(() => {
+            // Logout failed. Assuming offline
+          })
+          .finally(() => {
+            localStorage.removeItem('userName');
+            // props.onLogout();
+          });
+      }
+       
         return (
         <BrowserRouter>
             <div className='body bg-white text-black'>    
@@ -32,7 +45,6 @@ export default function App() {
                         element={
                             <Login 
                                 setUserName={setUserName} 
-                                // setPassword={setPassword}
                                 logout={logout}
                             />
                         } 
@@ -42,10 +54,7 @@ export default function App() {
                         path='/createAccount' 
                         element={
                             <CreateAccount 
-                                // setMyName={setMyName}
                                 setUserName={setUserName} 
-                                // setPassword={setPassword}
-                                // saveUser={saveUser}
                                 logout={logout}
                             />
                         } 
@@ -54,9 +63,6 @@ export default function App() {
                         path='/people' 
                         element={
                             <People  
-                                // myName={myName} 
-                                // userName={userName} 
-                                // password={password}
                                 logout={logout}
                             />
                         } 
@@ -65,8 +71,6 @@ export default function App() {
                         path='/dates' 
                         element={
                             <Dates 
-                            // myName={myName}
-                            // userName={userName} 
                             logout={logout}
                             />
                         } 

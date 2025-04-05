@@ -1,23 +1,21 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
 export function CreateAccount({setUserName, logout}) {
 
-  const [users, setUsers] = React.useState([]);
-  const [filterUsers, setFilterUsers] = React.useState({});
+  const navigate = useNavigate();
   const [n, setN] = React.useState('');
-  const [u, setU] = React.useState('');
+  const [e, setE] = React.useState('');
   const [pw, setPW] = React.useState('');
   const [pwc, setPWConfirm] = React.useState('');
-  const state = location.state;
-  const [isVisible, setIsVisible] = useState(false);
+  const [existingUser, setEsistingUser] = useState(false);
 
   function nChange(e) {
     setN(e.target.value);
   }
 
-  function uChange(e) {
-    setU(e.target.value);
+  function eChange(e) {
+    setE(e.target.value);
   }
 
   function pwChange(e) {
@@ -28,49 +26,23 @@ export function CreateAccount({setUserName, logout}) {
     setPWConfirm(e.target.value);
   }
 
-  async function saveUser() {
-    const newUser = { myName: n, userName: u, password: pw };
-    updateUsersLocal(newUser);
-    setUsers([...users, newUser]);
-    localStorage.setItem('userName', u);
-    setUserName(u);
+  async function createUser() {
+    const response = await fetch(`/api/auth/create`, {
+      method: 'post',
+      headers: { 'Content-type': 'application/json; charset=UTF-8', },
+      body: JSON.stringify({ myName: n, email: e, password: pw }),
+    });
+    if (response?.status === 200) {
+      setEsistingUser(false);
+      localStorage.setItem('userName', e);
+      navigate("/people")
+    } else {
+      const body = await response.json();
+      setEsistingUser(true);
+    }
   }
 
-  function updateUsersLocal(newUser) {
-    let users = [];
-    const usersText = localStorage.getItem('users');
-    if (usersText) {
-      users = JSON.parse(usersText);
-    }
-    users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
-  }
-
-    React.useEffect(() => {
-      const usersText = localStorage.getItem('users');
-      if (usersText) {
-        setUsers(JSON.parse(usersText));
-        setFilterUsers(JSON.parse(usersText));
-      }
-    }, []);
-
-    React.useEffect(
-      () => {
-        if (users && u) {
-          if (filterUsers.filter)  {
-            handleFilter(undefined);
-          }
-        }
-      },
-    ) 
-
-    function handleFilter(event) {
-      const filterData = filterUsers.filter(row => {return row.userName.toLowerCase() === u.toLowerCase()})
-      if(filterData.length) setIsVisible(true)
-      else setIsVisible(false)
-    }
-    
-    return (
+  return (
     <main className='container-fluid bg-secondary text-center'>
       <div className="row">
         <div className="column">
@@ -107,7 +79,7 @@ export function CreateAccount({setUserName, logout}) {
             </div>
             <div className="input-group mb-3">
                 <span className="input-group-text">@</span>
-                <input className="form-control" type="username" onChange={uChange} placeholder="your@email.com" />
+                <input className="form-control" type="username" onChange={eChange} placeholder="your@email.com" />
             </div>
             <div className="input-group mb-3">
                 <span className="input-group-text">🔒</span>
@@ -118,17 +90,15 @@ export function CreateAccount({setUserName, logout}) {
                 <input className="form-control" type="password" onChange={pwChangeConfirm} placeholder="confirm password" />
             </div>
             <div>
-              {isVisible && (
+              {existingUser && (
                 <div>
                   <p>Username already exists.</p>
                 </div>
               )}
             </div>
-            {!isVisible && n != '' && u != '' && pw != '' && pw === pwc && <NavLink to="/people">
-              <button type="submit" className="btn btn-primary" onClick={saveUser}>
-                Sign Up
-              </button>
-            </NavLink>}
+            <button disabled={n == '' || e == '' || pw == '' || pw != pwc } type="submit" className="btn btn-primary" onClick={createUser}>
+              Sign Up
+            </button>
           </div>
         </div>
       </div>
