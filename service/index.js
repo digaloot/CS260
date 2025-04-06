@@ -79,30 +79,31 @@ const verifyAuth = async (req, res, next) => {
 
 
 
-// // GetPeople
-// apiRouter.get('/people', (_req, res) => {
-//     // console.log("In People")
-//     res.send(people);
-// });
+// GetPeople
+apiRouter.get('/people', verifyAuth, (_req, res) => {
+    res.send(people);
+});
  
 // Get people filtered by the username
-apiRouter.post('/peopleFiltered', async (req, res) => {
+apiRouter.post('/peopleFiltered', verifyAuth, async (req, res) => {
     const newPeople = await findPeople("userNome", req.body.userNome);
     res.send(newPeople);
 });
 
 // SubmitPerson
-apiRouter.post('/addPerson', (req, res) => {
+apiRouter.post('/addPerson', verifyAuth, (req, res) => {
     people.push(req.body);
     res.send(people);
 });
 
 // DeletePerson
-apiRouter.delete('/deletePerson', (req, res) => {
+apiRouter.delete('/deletePerson', verifyAuth, async (req, res) => {
     const newPeople = people.filter((person) => 
         JSON.stringify(person) != JSON.stringify(req.body)
     );
     people = newPeople
+    let newDates = await findAltDates("nome", req.body.nome, "userNome", req.body.userNome)
+    dates = newDates
     res.send(people);
 });
     
@@ -110,25 +111,25 @@ apiRouter.delete('/deletePerson', (req, res) => {
 
 
 
-// // GetDates
-// apiRouter.get('/dates', (req, res) => {
-//     res.send(dates);
-// });
+// GetDates
+apiRouter.get('/dates', verifyAuth, (req, res) => {
+    res.send(dates);
+});
 
 // Get dates filtered by the important person and username
-apiRouter.post('/datesFiltered', async (req, res) => {
+apiRouter.post('/datesFiltered', verifyAuth, async (req, res) => {
     const newDates = await findDates("nome", req.body.nome, "userNome", req.body.userNome);
     res.send(newDates);
 });
     
 // SubmitDate
-apiRouter.post('/addDate', (req, res) => {
+apiRouter.post('/addDate', verifyAuth, (req, res) => {
     dates.push(req.body);
     res.send(dates);
 });
 
 // DeleteDate
-apiRouter.delete('/deleteDate', (req, res) => {
+apiRouter.delete('/deleteDate', verifyAuth, (req, res) => {
     const newDates = dates.filter((date) => 
         JSON.stringify(date) != JSON.stringify(req.body)
     );
@@ -182,7 +183,16 @@ async function findDates(field1, value1, field2, value2) {
     if (!value1) return null;
     return dates.filter((u) => 
         u[field1].toLowerCase() === value1.toLowerCase() 
-        && u[field2].toLowerCase() === value2.toLowerCase());
+        && u[field2].toLowerCase() === value2.toLowerCase()
+    );
+}
+
+async function findAltDates(field1, value1, field2, value2) {
+    if (!value1) return null;
+    return dates.filter((u) => 
+        u[field1].toLowerCase() !== value1.toLowerCase() 
+        || u[field2].toLowerCase() !== value2.toLowerCase()
+    );
 }
 
 // setAuthCookie in the HTTP response

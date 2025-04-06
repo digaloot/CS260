@@ -97,13 +97,17 @@ export function People({ logout }) {
   })
 
   React.useEffect(() => {
+    refresh()
+  }, []);
+
+  async function refresh() {
     const newData = {userNome: userName}
     fetch(`/api/peopleFiltered`, {
       method: 'POST',
       headers: { 'Content-type': 'application/json; charset=UTF-8', },
       body: JSON.stringify(newData),
     }).then((response) => {return response.json()}).then(json => {setPeople(json);})
-  }, []);
+  }
 
   async function handleDates(selectedRow) {
     navigate("/dates", {state:selectedRow.nome})
@@ -115,9 +119,7 @@ export function People({ logout }) {
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(selectedRow),
     })
-    const response = await fetch('/api/people')
-    const people = await response.json()
-    setPeople(people);
+    refresh()
   }
   
   async function savePerson() {
