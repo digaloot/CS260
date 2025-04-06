@@ -73,19 +73,22 @@ export function Dates({ logout }) {
     }
   ]
 
-    React.useEffect(() => {
-      setInterval(() => {
-        const names = [
-          '12/25', 
-          '7/4', 
-          '1/1',
-          '10/31'
-        ];
-        const randomName = names[Math.floor(Math.random() * names.length)];
-        const newMsg = `${randomName}`;
-        setMsg(newMsg);
-      }, 1000);
-    },[state])
+
+
+
+  React.useEffect(() => {
+    setInterval(() => {
+      const names = [
+        '12/25', 
+        '7/4', 
+        '1/1',
+        '10/31'
+      ];
+      const randomName = names[Math.floor(Math.random() * names.length)];
+      const newMsg = `${randomName}`;
+      setMsg(newMsg);
+    }, 1000);
+  },[state])
 
   React.useEffect(() => {
     if(!userName) {
@@ -93,24 +96,6 @@ export function Dates({ logout }) {
       navigate("/")
     }
   })
-
-    // React.useEffect(() => {
-    //   const datesText = localStorage.getItem('dates');
-    //   if (datesText) {
-    //     setDates(JSON.parse(datesText));
-    //     setFilterDates(JSON.parse(datesText));
-    //     setFilterAltDates(JSON.parse(datesText));
-    //   }
-    // }, []);
-
-  // React.useEffect(() => {
-  //   fetch('/api/dates')
-  //     .then((response) => response.json())
-  //     .then((newDates) => {
-  //       setDates(newDates);
-  //       // console.log(newDates)
-  //       });
-  // }, []);
 
   React.useEffect(() => {
     const newData = {userNome: userName, nome: state}
@@ -121,71 +106,32 @@ export function Dates({ logout }) {
     }).then((response) => {return response.json()}).then(json => {setDates(json);})
   }, []);
 
-    // React.useEffect(
-    //   () => {
-    //     if (dates) {
-    //       if (filterDates.filter)  {
-    //         handleFilter(undefined);
-    //       }
-    //     }
-    //   },
-    //   [state,filterDates]
-    // ) 
 
-    // async function saveDate() {
-    //   const newdate = { userNome: userName, nome: state, specialDay: specialDay, mmdd: mmdd };
-    //   updateDatesLocal(newdate);
-    //   setDates([...dates, newdate]);
-    //   setUserNome('');
-    //   setNome('');
-    //   setSpecialDay('');
-    //   setMMDD('');
-    //   // console.log(userName);
-    // }
 
-    async function saveDate() {
-      const newDate = { userNome: userName, nome: state, specialDay: specialDay, mmdd: mmdd };
-      await fetch('/api/addDate', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(newDate),
-      });
-      const newData = {userNome: userName, nome: state}
-      fetch(`/api/datesFiltered`, {
-        method: 'POST',
-        headers: { 'Content-type': 'application/json; charset=UTF-8', },
-        body: JSON.stringify(newData),
-      }).then((response) => {return response.json()}).then(json => {setDates(json);})
-      }
-      
-    // function updateDatesLocal(newdate) {
-    //   let dates = [];
-    //   const datesText = localStorage.getItem('dates');
-    //   if (datesText) {
-    //     dates = JSON.parse(datesText);
-    //   }
-    //   dates.push(newdate);
-    //   localStorage.setItem('dates', JSON.stringify(dates));
-    // }
   
-    function handleDelete(selectedRow) {
-      const newDates = dates.filter( li => li !== selectedRow)
-      const allDates = [...newDates, ...filterAltDates];
-      setDates(newDates);
-      localStorage.setItem('dates', JSON.stringify(allDates));
-    }
-
-    function handleFilter(event) {
-      const filterData = filterDates.filter(row => {
-        return row.nome.toLowerCase() === (state.toLowerCase()) && row.userNome.toLowerCase() .includes (userName.toLowerCase())
-      })
-      setDates(filterData)
-
-      const filterAltData = filterAltDates.filter(row => {
-        return row.nome.toLowerCase() !== (state.toLowerCase()) && row.userNome.toLowerCase() .includes (userName.toLowerCase())
-      })
-      setFilterAltDates(filterAltData)
-    }
+  async function saveDate() {
+    const newDate = { userNome: userName, nome: state, specialDay: specialDay, mmdd: mmdd };
+    await fetch('/api/addDate', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(newDate),
+    });
+    const newData = {userNome: userName, nome: state}
+    fetch(`/api/datesFiltered`, {
+      method: 'POST',
+      headers: { 'Content-type': 'application/json; charset=UTF-8', },
+      body: JSON.stringify(newData),
+    }).then((response) => {return response.json()}).then(json => {setDates(json);})
+    setSpecialDay('')
+    setMMDD('')
+  }
+    
+  function handleDelete(selectedRow) {
+    const newDates = dates.filter( li => li !== selectedRow)
+    const allDates = [...newDates, ...filterAltDates];
+    setDates(newDates);
+    localStorage.setItem('dates', JSON.stringify(allDates));
+  }
     
   return (
     <main className='body_items'>
@@ -213,9 +159,6 @@ export function Dates({ logout }) {
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
           <button disabled={!specialDay && !mmdd} type="submit" className="btn btn-primary" onClick={(refreshPage) => saveDate()}> Add </button>
         </span>
-        {/* <div className='text-end' onChange = {handleFilter}>
-          <input type = 'text'  placeholder="Search..."/>
-        </div> */}
         <div>
           <DataTable
           columns = {columns}

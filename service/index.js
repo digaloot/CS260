@@ -34,56 +34,56 @@ app.use(`/api`, apiRouter);
 // CreateAuth a new user
 apiRouter.post('/auth/create', async (req, res) => {
     if (await findUser('email', req.body.email)) {
-      res.status(409).send({ msg: 'Existing user' });
+        res.status(409).send({ msg: 'Existing user' });
     } else {
-      const user = await createUser(req.body.myName, req.body.email, req.body.password);
-      setAuthCookie(res, user.token);
-      res.send({ email: user.email });
-    }
-  });
-
-  // GetAuth login an existing user
-  apiRouter.post('/auth/login', async (req, res) => {
-    const user = await findUser('email', req.body.email);
-    if (user) {
-      if (await bcrypt.compare(req.body.password, user.password)) {
-        user.token = uuid.v4();
+        const user = await createUser(req.body.myName, req.body.email, req.body.password);
         setAuthCookie(res, user.token);
         res.send({ email: user.email });
-        return;
-      }
+    }
+});
+
+// GetAuth login an existing user
+apiRouter.post('/auth/login', async (req, res) => {
+    const user = await findUser('email', req.body.email);
+    if (user) {
+        if (await bcrypt.compare(req.body.password, user.password)) {
+            user.token = uuid.v4();
+            setAuthCookie(res, user.token);
+            res.send({ email: user.email });
+            return;
+        }
     }
     res.status(401).send({ msg: 'Unauthorized' });
-  });
+});
   
-  // DeleteAuth logout a user
-  apiRouter.delete('/auth/logout', async (req, res) => {
+// DeleteAuth logout a user
+apiRouter.delete('/auth/logout', async (req, res) => {
     const user = await findUser('token', req.cookies[authCookieName]);
     if (user) {
-      delete user.token;
+        delete user.token;
     }
     res.clearCookie(authCookieName);
     res.status(204).end();
-  });
+});
   
-  // Middleware to verify that the user is authorized to call an endpoint
-  const verifyAuth = async (req, res, next) => {
+// Middleware to verify that the user is authorized to call an endpoint
+const verifyAuth = async (req, res, next) => {
     const user = await findUser('token', req.cookies[authCookieName]);
     if (user) {
-      next();
+        next();
     } else {
-      res.status(401).send({ msg: 'Unauthorized' });
+        res.status(401).send({ msg: 'Unauthorized' });
     }
-  };
+};
   
 
 
 
-// GetPeople
-apiRouter.get('/people', (_req, res) => {
-    // console.log("In People")
-    res.send(people);
-});
+// // GetPeople
+// apiRouter.get('/people', (_req, res) => {
+//     // console.log("In People")
+//     res.send(people);
+// });
  
 // Get people filtered by the username
 apiRouter.post('/peopleFiltered', async (req, res) => {
@@ -110,10 +110,10 @@ apiRouter.delete('/deletePerson', (req, res) => {
 
 
 
-// GetDates
-apiRouter.get('/dates', (req, res) => {
-    res.send(dates);
-});
+// // GetDates
+// apiRouter.get('/dates', (req, res) => {
+//     res.send(dates);
+// });
 
 // Get dates filtered by the important person and username
 apiRouter.post('/datesFiltered', async (req, res) => {
@@ -135,77 +135,65 @@ apiRouter.delete('/deleteDate', (req, res) => {
     dates = newDates
     res.send(dates);
 });
-    
-
-
-
-
-
-
-
-
   
-//  // GetTest
-// var testData = {test:"testdata"};
-// apiRouter.get('/test', (_req, res) => {
-//   console.log("In Test")
-//   res.send(testData);
-// });
 
 
 
 
-  // Default error handler
-  app.use(function (err, req, res, next) {
+// Default error handler
+app.use(function (err, req, res, next) {
     res.status(500).send({ type: err.name, message: err.message });
-  });
-  
-  // Return the application's default page if the path is unknown
-  app.use((_req, res) => {
+});
+
+// Return the application's default page if the path is unknown
+app.use((_req, res) => {
     res.sendFile('index.html', { root: 'public' });
-  });
+});
 
 
 
 
-  async function createUser(myName, email, password) {
+
+async function createUser(myName, email, password) {
     const passwordHash = await bcrypt.hash(password, 10);
-  
     const user = {
-      myName: myName,
-      email: email,
-      password: passwordHash,
-      token: uuid.v4(),
+        myName: myName,
+        email: email,
+        password: passwordHash,
+        token: uuid.v4(),
     };
     users.push(user);
-  
     return user;
-  }
+}
   
-  async function findUser(field, value) {
+async function findUser(field, value) {
     if (!value) return null;
-    return users.find((u) => u[field] === value);
-  }
+    return users.find((u) => 
+        u[field].toLowerCase() === value.toLowerCase());
+}
 
-  async function findPeople(field1, value1) {
+async function findPeople(field1, value1) {
     if (!value1) return null;
-    return people.filter((u) => u[field1] === value1);
-  }
-  
-  async function findDates(field1, value1, field2, value2) {
-    if (!value1) return null;
-    return dates.filter((u) => u[field1] === value1 && u[field2] === value2);
-  }
+    return people.filter((u) => 
+        u[field1].toLowerCase() === value1.toLowerCase());
+}
 
-  // setAuthCookie in the HTTP response
-  function setAuthCookie(res, authToken) {
+async function findDates(field1, value1, field2, value2) {
+    if (!value1) return null;
+    return dates.filter((u) => 
+        u[field1].toLowerCase() === value1.toLowerCase() 
+        && u[field2].toLowerCase() === value2.toLowerCase());
+}
+
+// setAuthCookie in the HTTP response
+function setAuthCookie(res, authToken) {
     res.cookie(authCookieName, authToken, {
-      secure: true,
-      httpOnly: true,
-      sameSite: 'strict',
+        secure: true,
+        httpOnly: true,
+        sameSite: 'strict',
     });
-  }
+}
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
-  });
+});

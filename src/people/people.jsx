@@ -6,15 +6,11 @@ export function People({ logout }) {
 
   const navigate = useNavigate();
   const state = location.state;
-  const [filterPeople, setFilterPeople] = React.useState({});
-  // const [userNome, setUserNome] = React.useState({});
   const userName = localStorage.getItem('userName');
   const [nome, setNome] = React.useState(localStorage.getItem('nome') || ''); // this is their friendly name
   const [email, setEmail] = React.useState(localStorage.getItem('email') || '');
   const [relationship, setRelationship] = React.useState(localStorage.getItem('relationship') || '');
-  const [filterAltPeople, setFilterAltPeople] = React.useState([]);
   const [people, setPeople] = React.useState([]);
-  const [dates, setDates] = React.useState([]);
   const [msg, setMsg] = React.useState('...listening');
 
   
@@ -100,68 +96,20 @@ export function People({ logout }) {
     }
   })
 
-  // React.useEffect(() => {
-  //   const datesText = localStorage.getItem('dates');
-  //   if (datesText) {
-  //     setDates(JSON.parse(datesText));
-  //   }
-  // }, []);
-
-  /***********************************************************************/
-  // React.useEffect(() => {
-  //   fetch('/api/dates')
-  //     .then((response) => response.json())
-  //     .then((dates) => {
-  //       setDates(dates);
-  //     });
-  // }, []);
-  /***********************************************************************/
-
-  // React.useEffect(() => {
-  //   const peopleText = localStorage.getItem('people');
-  //   if (peopleText) {
-  //     setPeople(JSON.parse(peopleText));
-  //     setFilterPeople(JSON.parse(peopleText));
-  //     setFilterAltPeople(JSON.parse(peopleText));
-  //   }
-  // }, []);
-
   React.useEffect(() => {
-    fetch('/api/people')
-      .then((response) => response.json())
-      .then((people) => {
-        setPeople(people);
-        });
+    const newData = {userNome: userName}
+    fetch(`/api/peopleFiltered`, {
+      method: 'POST',
+      headers: { 'Content-type': 'application/json; charset=UTF-8', },
+      body: JSON.stringify(newData),
+    }).then((response) => {return response.json()}).then(json => {setPeople(json);})
   }, []);
 
-    React.useEffect(
-      () => {
-        if (people) {
-          if (filterPeople.filter)  {
-            handleFilterU(undefined);
-          }
-        }
-      },
-      [filterPeople]
-    ) 
-
-  // const handleDates = (selectedRow) => {navigate("/dates", {state:selectedRow.nome});};
-
-    async function handleDates(selectedRow) {
-      // const response = await fetch(`/api/datesFiltered`, {
-      //   method: 'post',
-      //   headers: { 'Content-type': 'application/json; charset=UTF-8', },
-      //   body: JSON.stringify(selectedRow),
-      // });
-      navigate("/dates", {state:selectedRow.nome})
-    }
+  async function handleDates(selectedRow) {
+    navigate("/dates", {state:selectedRow.nome})
+  }
 
   async function handleDelete(selectedRow) {
-    // const newPeople = people.filter( li => li !== selectedRow )
-    // const allPeople = [...newPeople, ...filterAltPeople];
-    // setPeople(newPeople);
-    // localStorage.setItem('people', JSON.stringify(allPeople));
-
     await fetch('/api/deletePerson', {
       method: 'DELETE',
       headers: { 'content-type': 'application/json' },
@@ -170,60 +118,17 @@ export function People({ logout }) {
     const response = await fetch('/api/people')
     const people = await response.json()
     setPeople(people);
-    setFilterPeople(people);
-    setFilterAltPeople(people);
-
-
-
-    // const newDates = dates.filter( (li) => { return li.nome !== selectedRow.nome })
-    // setDates(newDates);
-    // localStorage.setItem('dates', JSON.stringify(newDates));
   }
   
-  function handleFilter(event) {
-    const newData = filterPeople.filter(row => {
-      return  row.nome.toLowerCase().includes(event.target.value.toLowerCase()) && userName.toLowerCase() === (row.userNome.toLowerCase())
-    })
-    setPeople(newData)
-  }
-
-  function handleFilterU(event) {
-    const filterData = filterPeople.filter(row => {
-      return userName.toLowerCase() === (row.userNome.toLowerCase())
-    })
-    setPeople(filterData)
-
-    const filterAltData = filterAltPeople.filter(row => {
-      return userName.toLowerCase() !== (row.userNome.toLowerCase())
-    })
-    setFilterAltPeople(filterAltData)
-  }
-
   async function savePerson() {
     const newPerson = { userNome: userName, nome: nome, email: email, relationship: relationship };
-    // updatePeopleLocal(newPerson);
     await fetch('/api/addPerson', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(newPerson),
     });
-    // console.log(newPerson);
-
-    // setPeople([...people, newPerson]);
-    // setUserNome('');
   }
 
-  // function updatePeopleLocal(newPerson) {
-  //   let people = [];
-  //   const peopleText = localStorage.getItem('people');
-  //   if (peopleText) {
-  //     people = JSON.parse(peopleText);
-  //   }
-  //   people.push(newPerson);
-  //   localStorage.setItem('people', JSON.stringify(people));
-  // }
-  
-  // console.log("username: ", userName)
   return (
 
     <main>
@@ -281,9 +186,6 @@ export function People({ logout }) {
       </form>
 
      <div className="container mt-5'">
-        <div className='text-end' onChange = {handleFilter}>
-          <input type = 'text'  placeholder="Search..."/>
-        </div>
         <div>
           <DataTable
           columns = {columns}
