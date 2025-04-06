@@ -8,11 +8,7 @@ export function Dates({ logout }) {
   const location = useLocation();
   const state = location.state;
   const [dates, setDates] = React.useState([]);
-  const [filterAltDates, setFilterAltDates] = React.useState([]);
-  const [filterDates, setFilterDates] = React.useState({});
   const userName = localStorage.getItem('userName');
-  const [userNome, setUserNome] = React.useState({});
-  const [nome, setNome] = React.useState({});
   const [msg, setMsg] = React.useState('...listening');
   const [specialDay, setSpecialDay] = React.useState(localStorage.getItem('specialDay') || '');
   const [mmdd, setMMDD] = React.useState(localStorage.getItem('mmdd') || '');
@@ -98,24 +94,13 @@ export function Dates({ logout }) {
   })
 
   React.useEffect(() => {
-    const newData = {userNome: userName, nome: state}
-    fetch(`/api/datesFiltered`, {
-      method: 'POST',
-      headers: { 'Content-type': 'application/json; charset=UTF-8', },
-      body: JSON.stringify(newData),
-    }).then((response) => {return response.json()}).then(json => {setDates(json);})
+    refresh()
   }, []);
 
 
 
   
-  async function saveDate() {
-    const newDate = { userNome: userName, nome: state, specialDay: specialDay, mmdd: mmdd };
-    await fetch('/api/addDate', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(newDate),
-    });
+  async function refresh() {
     const newData = {userNome: userName, nome: state}
     fetch(`/api/datesFiltered`, {
       method: 'POST',
@@ -125,14 +110,26 @@ export function Dates({ logout }) {
     setSpecialDay('')
     setMMDD('')
   }
-    
-  function handleDelete(selectedRow) {
-    const newDates = dates.filter( li => li !== selectedRow)
-    const allDates = [...newDates, ...filterAltDates];
-    setDates(newDates);
-    localStorage.setItem('dates', JSON.stringify(allDates));
+
+  async function saveDate() {
+    const newDate = { userNome: userName, nome: state, specialDay: specialDay, mmdd: mmdd };
+    await fetch('/api/addDate', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(newDate),
+    });
+    refresh()
   }
     
+  async function handleDelete(selectedRow) {
+    await fetch('/api/deleteDate', {
+      method: 'DELETE',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(selectedRow),
+    })
+    refresh()
+  }
+
   return (
     <main className='body_items'>
       <div className='header_text'>
