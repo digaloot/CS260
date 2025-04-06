@@ -9,7 +9,7 @@ export function Dates({ logout }) {
   const state = location.state;
   const [dates, setDates] = React.useState([]);
   const userName = localStorage.getItem('userName');
-  const [msg, setMsg] = React.useState('...listening');
+  const [msg, setMsg] = React.useState('');
   const [specialDay, setSpecialDay] = React.useState(localStorage.getItem('specialDay') || '');
   const [mmdd, setMMDD] = React.useState(localStorage.getItem('mmdd') || '');
   
@@ -73,20 +73,6 @@ export function Dates({ logout }) {
 
 
   React.useEffect(() => {
-    setInterval(() => {
-      const names = [
-        '12/25', 
-        '7/4', 
-        '1/1',
-        '10/31'
-      ];
-      const randomName = names[Math.floor(Math.random() * names.length)];
-      const newMsg = `${randomName}`;
-      setMsg(newMsg);
-    }, 1000);
-  },[state])
-
-  React.useEffect(() => {
     if(!userName) {
       logout
       navigate("/")
@@ -97,8 +83,26 @@ export function Dates({ logout }) {
     refresh()
   }, []);
 
+  React.useEffect(() => {
+      quote()
+  }, []);
+
+  React.useEffect(() => {
+    setInterval(() => {
+      quote()
+    }, 10000);
+  }, []);
 
 
+
+
+  async function quote() {
+    fetch('https://api.chucknorris.io/jokes/random?category=dev')
+    .then((response) => response.json())
+    .then((jsonResponse) => {
+      setMsg(jsonResponse.value)
+    });    
+  }
   
   async function refresh() {
     const newData = {userNome: userName, nome: state}
@@ -133,7 +137,10 @@ export function Dates({ logout }) {
   return (
     <main className='body_items'>
       <div className='header_text'>
-      Fun fact.  The most frequently selected Important Date of the year is: {msg}
+        {/* What if Chuck Norris had been computer science student?
+        <br/>
+        <br/> */}
+        {msg}
         <br/>
         <br/>
       </div>

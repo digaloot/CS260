@@ -111,4 +111,5 @@ Have you ever forgotten an important date?  Anniversary, birthday, or something 
 3. Login and Create User pages are working.  Now moving on to dates.
 4. Everything seems to work as far as navigation, creating users, logging in, adding people and adding dates. Now moving on to deleting dates.
 5. Deleting a single date for a user works.  Moving on to delete an important person and all their dates
-6. Everything is working except for the authentication token.  In Apps.jsx in the logout function, working on props which is tied to that.
+6. Added third party service endpoints to the people and dates pages for quotes and jokes
+7. Everything is working except for the authentication token.  In Apps.jsx in the logout function, working on props which is tied to that.

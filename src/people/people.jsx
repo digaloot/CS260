@@ -11,7 +11,8 @@ export function People({ logout }) {
   const [email, setEmail] = React.useState(localStorage.getItem('email') || '');
   const [relationship, setRelationship] = React.useState(localStorage.getItem('relationship') || '');
   const [people, setPeople] = React.useState([]);
-  const [msg, setMsg] = React.useState('...listening');
+  const [msg, setMsg] = React.useState('');
+  const [author, setAuthor] = React.useState('');
 
   
   const customStyles = {
@@ -72,24 +73,6 @@ export function People({ logout }) {
 
 
   React.useEffect(() => {
-    setInterval(() => {
-      const names = [
-        '  What do you call a dinosour that drives: "Tyrannosaurus Wrecks"..........Funny Score:', 
-        '  What state is known for it\'s small drinks: "Minnesota"..........Funny Score:', 
-        '  I told my wife she should embrace her mistakes.  She gave me a hug...........Funny Score:',
-        '  What do you call a fake noodle?  "Impasta"..........Funny Score:',
-        '  What did the big flower say to the little flower? "Hi Bud"..........Funny Score:',
-        '  I went to buy some camouflage pants, but I could\'nt find any...........Funny Score:',
-        '  I used to have a job at a calendar factory, but I got fired because I took a couple of days off...........Funny Score:'
-      ];
-      const randomName = names[Math.floor(Math.random() * names.length)];
-      const randomCount = Math.floor(Math.random() * 100) + 1;
-      const newMsg = `${randomName} ${randomCount}`;
-      setMsg(newMsg);
-    }, 3000);
-  },[state])
-
-  React.useEffect(() => {
     if(!userName) {
       logout
       navigate("/")
@@ -100,6 +83,25 @@ export function People({ logout }) {
     refresh()
   }, []);
 
+  React.useEffect(() => {
+      quote()
+  }, []);
+
+  React.useEffect(() => {
+    setInterval(() => {
+      quote()
+    }, 10000);
+  }, []);
+
+  async function quote() {
+    fetch('https://quote.cs260.click')
+    .then((response) => response.json())
+    .then((jsonResponse) => {
+      setAuthor(jsonResponse.author)
+      setMsg(jsonResponse.quote)
+    });    
+  }
+  
   async function refresh() {
     const newData = {userNome: userName}
     fetch(`/api/peopleFiltered`, {
@@ -135,7 +137,10 @@ export function People({ logout }) {
 
     <main>
       <div className='header_text'>
-        Joke of the day. {msg}
+        {/* Joke of the day.  */}
+        *****  {author}  *****
+        <br/>
+        {msg}
         <br/>
         <br/>
       </div>
