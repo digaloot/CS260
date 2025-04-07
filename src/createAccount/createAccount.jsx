@@ -1,7 +1,8 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import { AuthState } from "../authState";
 
-export function CreateAccount({setUserName, logout}) {
+export function CreateAccount({logout, setAuthState, setUserName}) {
 
   const navigate = useNavigate();
   const [n, setN] = React.useState('');
@@ -9,6 +10,7 @@ export function CreateAccount({setUserName, logout}) {
   const [pw, setPW] = React.useState('');
   const [pwc, setPWConfirm] = React.useState('');
   const [existingUser, setEsistingUser] = useState(false);
+  // const [authState, setAuthState] = React.useState(currentAuthState);
 
   function nChange(e) {
     setN(e.target.value);
@@ -35,6 +37,8 @@ export function CreateAccount({setUserName, logout}) {
     if (response?.status === 200) {
       setEsistingUser(false);
       localStorage.setItem('userName', e);
+      setUserName(e);
+      setAuthState(AuthState.Authenticated);
       navigate("/people")
     } else {
       const body = await response.json();

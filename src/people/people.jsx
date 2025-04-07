@@ -104,6 +104,7 @@ export function People({ logout }) {
   
   async function refresh() {
     const newData = {userNome: userName}
+    // console.log(userName)
     fetch(`/api/peopleFiltered`, {
       method: 'POST',
       headers: { 'Content-type': 'application/json; charset=UTF-8', },

@@ -6,11 +6,14 @@ import { Login } from './login/login';
 import { CreateAccount } from './createAccount/createAccount';
 import { People } from './people/people';
 import { Dates } from './dates/dates';
+import { AuthState } from './authState';
 
 export default function App() {
 
     const [userName, setUserName] = React.useState(localStorage.getItem('userName') || ''); // this is the username / email address
-
+    const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
+    const [authState, setAuthState] = React.useState(currentAuthState);
+  
     function logout() {
         fetch(`/api/auth/logout`, {
           method: 'delete',
@@ -20,11 +23,12 @@ export default function App() {
           })
           .finally(() => {
             localStorage.removeItem('userName');
-            // props.onLogout();
+            setAuthState(AuthState.Unauthenticated);
+            setUserName('');
           });
       }
        
-        return (
+      return (
         <BrowserRouter>
             <div className='body bg-white text-black'>    
 
@@ -33,8 +37,9 @@ export default function App() {
                         path='/' 
                         element={
                             <Login 
-                                setUserName={setUserName} 
                                 logout={logout}
+                                setAuthState = {setAuthState}
+                                setUserName={setUserName}
                             />
                         } 
                         exact 
@@ -43,8 +48,9 @@ export default function App() {
                         path='/createAccount' 
                         element={
                             <CreateAccount 
-                                setUserName={setUserName} 
                                 logout={logout}
+                                setAuthState = {setAuthState}
+                                setUserName={setUserName}
                             />
                         } 
                     />
@@ -60,7 +66,7 @@ export default function App() {
                         path='/dates' 
                         element={
                             <Dates 
-                            logout={logout}
+                                logout={logout}
                             />
                         } 
                     />

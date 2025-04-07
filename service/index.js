@@ -69,6 +69,7 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 // Middleware to verify that the user is authorized to call an endpoint
 const verifyAuth = async (req, res, next) => {
     const user = await findUser('token', req.cookies[authCookieName]);
+    // console.log(user)
     if (user) {
         next();
     } else {
@@ -86,6 +87,7 @@ apiRouter.get('/people', verifyAuth, (_req, res) => {
  
 // Get people filtered by the username
 apiRouter.post('/peopleFiltered', verifyAuth, async (req, res) => {
+    // console.log(req.body)
     const newPeople = await findPeople("userNome", req.body.userNome);
     res.send(newPeople);
 });
@@ -168,12 +170,19 @@ async function createUser(myName, email, password) {
 }
   
 async function findUser(field, value) {
+    // console.log("findUser")
+    // console.log(value)
+    // console.log(users)
     if (!value) return null;
-    return users.find((u) => 
-        u[field].toLowerCase() === value.toLowerCase());
+    return users.find((u) => {
+        if(u[field] === undefined) return false;
+        return u[field].toLowerCase() === value.toLowerCase();
+    })
 }
 
 async function findPeople(field1, value1) {
+    // console.log(value1)
+    // console.log(people)
     if (!value1) return null;
     return people.filter((u) => 
         u[field1].toLowerCase() === value1.toLowerCase());

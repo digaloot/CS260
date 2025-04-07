@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { AuthState } from "../authState";
 
 
-export function Login({ setUserName, logout }) {
+export function Login({ logout, setAuthState, setUserName }) {
 
-  const [e, setE] = React.useState('');
-  const [pw, setPW] = React.useState('');
-  const [displayWrongPW, setDisplayWrongPW] = useState(false);
-  const navigate = useNavigate();
+    const [e, setE] = React.useState('');
+    const [pw, setPW] = React.useState('');
+    const [displayWrongPW, setDisplayWrongPW] = useState(false);
+    const navigate = useNavigate();
+    // const [authState, setAuthState] = React.useState(currentAuthState);
 
     async function loginUser() {
         const response = await fetch(`/api/auth/login`, {
@@ -17,11 +19,13 @@ export function Login({ setUserName, logout }) {
         });
         if (response?.status === 200) {
             setDisplayWrongPW(false);
-          localStorage.setItem('userName', e);
-          navigate("/people")
+            localStorage.setItem('userName', e);
+            setAuthState(AuthState.Authenticated);
+            setUserName(e);
+            navigate("/people")
         } else {
-          const body = await response.json();
-          setDisplayWrongPW(true);
+            const body = await response.json();
+            setDisplayWrongPW(true);
         }
       }
         
